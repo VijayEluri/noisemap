@@ -1,0 +1,94 @@
+% This file is part of lamake
+%
+% Copyright (C) 2010 Nikos Maris
+%
+% This program is free software; you can redistribute it and/or modify it under
+% the terms of the GNU General Public Licence as published by the Free Software
+% Foundation; either version 2 of the Licence, or (at your option) any later
+% version.
+%
+% This program is distributed in the hope that it will be useful, but WITHOUT
+% ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+% FOR A PARTICULAR PURPOSE.  See the GNU General Public Licence for more 
+% details.
+%
+% You should have received a copy of the GNU General Public Licence along with
+% this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
+% Street, Fifth Floor, Boston, MA  02110-1301, USA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Sample usage of this file:
+%\input{packages}
+%\hypersetup{pdftitle={Curriculum vitae of Maris Nikolaos}}
+% pdftotext -layout maris_nikos_cv_en.pdf
+
+\usepackage{euler}
+\usepackage[intlimits]{amsmath}			% place the limits over and under the integral symbol
+\ifthenels{greek}{                      % "set engine pdftex" work
+    \usepackage[cm-default]{fontspec}	% solves problems with maths in xetex
+    \usepackage{xunicode}
+    \usepackage{xltxtra}				% "computer modern" is the font used by latex
+		\usepackage{xgreek}							% needed for hyphenation
+		\ifthenels{greeksmall}{
+    	\setromanfont[Mapping=tex-text]{Linux Libertine O}	% open source alternative of the TimesNewRoman font, nice for large docs
+		}{
+			\setmainfont[Mapping=tex-text]{DejaVu Sans}				  % for other latex-like (opentype) fonts "fc-list | grep -i deja"
+		}
+		\usepackage{ifxetex}				% xetex is more active than auto-greek, greektex, xetex
+		\RequireXeTeX
+		\usepackage[dvipdfm,
+				pdftitle={CV of Maris Nikolaos},
+				pdfauthor={Maris Nikolaos},
+				pdfcreator={texlive},
+				pdfsubject={todo},
+				pdfkeywords={todo}]{hyperref} 		% citation appears as link. \href{my_url}{description}
+		\hypersetup{colorlinks=true,            % choose color from list /usr/share/texmf/tex/latex/xcolor or \definecolor{LinkColor}{rgb}{0,0,1}
+				linkcolor=blue,                     % or black
+				citecolor=blue,
+				filecolor=blue,
+				menucolor=blue,
+				urlcolor=blue}
+}{                                      % language support conflicts with math support (else if latex:)
+    \usepackage{amssymb}				% for \geqslant \nexists		does not work with xetex
+		\usepackage[pdftex,
+				pdftitle={CV of Maris Nikolaos},
+				pdfauthor={Maris Nikolaos},
+				pdfcreator={texlive},
+				pdfsubject={todo},
+				pdfkeywords={todo}]{hyperref} 		% citation appears as link. \href{my_url}{description}
+		\hypersetup{colorlinks=true,            % choose color from list /usr/share/texmf/tex/latex/xcolor or \definecolor{LinkColor}{rgb}{0,0,1}
+				linkcolor=blue,                     % or black
+				citecolor=blue,
+				filecolor=blue,
+				menucolor=blue,
+				urlcolor=blue}
+}
+% figures
+\usepackage{float}						% to place the figures where YOU want
+\usepackage{graphicx}                   % gedit-latex-plugin auto builds tex files and auto converts images
+% placement of text
+\usepackage{fullpage}					%% for smaller margins
+\usepackage{indentfirst}
+% links
+\usepackage{color}
+
+%\usepackage{hyper}
+
+\usepackage{url}						% usage: \url{http://www.stack.nl/~jwk/latex/}
+\usepackage{multirow}
+
+%\usepackage{tikz}						% for pictures with text that has to be parsed with latex
+%\usetikzlibrary{arrows,%
+%                plotmarks}
+%\usepackage{colortbl}                  % add background color in table rows
+
+% matlab script: http://www.artefact.tk/software/matlab/highlight/
+% at matlab run : highlight('Untitled1.m',struct('type','tex','linenb',0)) to get text
+%\begin{alltt}text\end{alltt}
+%\usepackage{subfigure}
+%\usepackage{alltt}
+%\usepackage{color}
+%\usepackage{fullpage}
+%\definecolor{string}{rgb}{0.7,0.0,0.0}
+
+% http://thewikiblog.appspot.com/blog/python-inside-latex
+% use symPy to process math equations and python.sty to embed them to latex

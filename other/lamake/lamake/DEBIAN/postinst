@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cp --preserve -r /usr/lib/lamake/.lamake ~/.lamake
+python /usr/lib/lamake/configure_geditlatexplugin.py

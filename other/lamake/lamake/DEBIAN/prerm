@@ -1,0 +1,44 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# This file is part of lamake
+#
+# Copyright (C) 2010 Nikos Maris
+#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public Licence as published by the Free Software
+# Foundation; either version 2 of the Licence, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public Licence for more 
+# details.
+#
+# You should have received a copy of the GNU General Public Licence along with
+# this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
+# Street, Fifth Floor, Boston, MA  02110-1301, USA
+####################################################
+# Removes the tools of gedit-latex-plugin that are related with latex-makefile
+
+import os,sys,re, shutil
+from os.path import join
+
+# delete files from home folder
+n = ".lamake"
+home = os.environ.get("HOME")											# root needs double quotes
+path = join(home,n)
+if os.path.isdir(path):
+	shutil.rmtree(path)
+
+# configure gedit-latex-plugin to use the above files
+confpath = join(home,".gnome2/gedit/plugins/GeditLaTeXPlugin/tools.xml")
+lines = open(confpath,'r').readlines()						# Each <tool> has one <job> per line
+i=0
+for i in range(len(lines)):
+	if re.search(r'"Make PDF"',lines[i])==None:
+		i=i+1
+if i!=len(lines):
+	lines.pop(i)	# <tool>
+	lines.pop(i)	# <job>
+	lines.pop(i)	# </tool>
+	open(confpath,'w').writelines(lines)
