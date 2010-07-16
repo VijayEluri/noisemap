@@ -1,0 +1,14 @@
+package maris.learning;
+
+public class Printing {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.print( "Your Operating System is"+
+				System.getProperty("os.name") );
+	}
+
+}
