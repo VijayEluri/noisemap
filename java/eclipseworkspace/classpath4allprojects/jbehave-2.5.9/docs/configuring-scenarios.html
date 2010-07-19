@@ -1,0 +1,357 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Configuring Scenarios</title>
+
+<style type="text/css" media="all">
+@import url( "./style/jbehave.css" );
+</style>
+
+<script type="text/javascript" src="./js/mootools-1.2/mootools-core.js"></script>
+<script type="text/javascript" src="./js/mootools-1.2/mootools-fx.js"></script>
+<script type="text/javascript" src="./js/mootools-1.2/menu-fx.js"></script>
+<style media="screen" type="text/css">
+div.MGroupContent {
+	display: none
+}
+</style>
+<meta name="verify-v1"
+	content="UsIBiaQhhmjFrBwcJ2n4XIvEImPNG4SMVP365rRcpxE=" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+</head>
+
+<body class="composite">
+<div id="banner"><img src="images/jbehave-logo.png" alt="jbehave" />
+<div class="clear"></div>
+</div>
+
+<div id="Menu">
+<div class="MGroup MEntry"><a>About</a>
+<div id="MGroupContent0" class="MGroupContent"
+	style="display: block;"> <div class="MFile MEntry"><a href="index.html">What is JBehave?</a>
+</div>
+  <div class="MFile MEntry"><a href="getting-started.html">Getting Started</a>
+</div>
+  <div class="MFile MEntry"><a href="dependencies.html">Dependencies</a>
+</div>
+  <div class="MFile MEntry"><a href="faq.html">FAQs</a>
+</div>
+  <div class="MFile MEntry"><a href="license.html">License</a>
+</div>
+  <div class="MFile MEntry"><a href="download.html">Download</a>
+</div>
+  <div class="MFile MEntry"><a href="javadoc.html">Javadoc</a>
+</div>
+  <div class="MFile MEntry"><a href="release-notes.html">Release Notes</a>
+</div>
+  <div class="MFile MEntry"><a href="building-source.html">Building Source</a>
+</div>
+  <div class="MFile MEntry"><a href="running-examples.html">Running Examples</a>
+</div>
+ </div>
+</div>
+
+<div class="MGroup MEntry"><a>Fundamentals</a>
+<div id="MGroupContent1" class="MGroupContent"
+	style="display: block;"> <div class="MFile MEntry"><a href="concepts.html">BDD Concepts</a>
+</div>
+  <div class="MFile MEntry"><a href="grammar.html">Grammar</a>
+</div>
+  <div class="MFile MEntry"><a href="more-on-bdd.html">More on BDD</a>
+</div>
+ </div>
+</div>
+
+<div class="MGroup MEntry"><a>Scenarios</a>
+<div id="MGroupContent2" class="MGroupContent"
+	style="display: block;"> <div class="MFile MEntry"><a href="developing-scenarios.html">Developing Scenarios</a>
+</div>
+  <div class="MFile MEntry"><a href="annotations.html">Annotations</a>
+</div>
+  <div class="MFile MEntry"><a href="candidate-steps.html">Candidate Steps</a>
+</div>
+  <div class="MFile MEntry"><a href="pending-steps.html">Pending Steps</a>
+</div>
+  <div class="MFile MEntry" id="MSelected">Configuring Scenarios</div>
+  <div class="MFile MEntry"><a href="running-scenarios.html">Running Scenarios</a>
+</div>
+  <div class="MFile MEntry"><a href="stepdocs.html">Stepdocs</a>
+</div>
+  <div class="MFile MEntry"><a href="i18n-scenarios.html">Non-English Scenarios</a>
+</div>
+ </div>
+</div>
+
+<div class="MGroup MEntry"><a>Advanced Topics</a>
+<div id="MGroupContent3" class="MGroupContent"
+	style="display: block;"> <div class="MFile MEntry"><a href="aliases.html">Aliases</a>
+</div>
+  <div class="MFile MEntry"><a href="dependency-injection.html">Dependency Injection</a>
+</div>
+  <div class="MFile MEntry"><a href="parameter-injection.html">Parameter Injection</a>
+</div>
+  <div class="MFile MEntry"><a href="parameter-converters.html">Parameter Converters</a>
+</div>
+  <div class="MFile MEntry"><a href="table-examples.html">Table Examples</a>
+</div>
+  <div class="MFile MEntry"><a href="table-parameters.html">Table Parameters</a>
+</div>
+  <div class="MFile MEntry"><a href="given-scenarios.html">Given Scenarios</a>
+</div>
+  <div class="MFile MEntry"><a href="reports.html">Reports</a>
+</div>
+ </div>
+</div>
+
+<div class="MGroup MEntry"><a>Project Info</a>
+<div id="MGroupContent4" class="MGroupContent"
+	style="display: block;"> <div class="MFile MEntry"><a href="mailing-lists.html">Mailing Lists</a>
+</div>
+  <div class="MFile MEntry"><a href="issue-tracking.html">Issue Tracking</a>
+</div>
+  <div class="MFile MEntry"><a href="team-list.html">Team list</a>
+</div>
+  <div class="MFile MEntry"><a href="source-repository.html">Source Repository</a>
+</div>
+ </div>
+</div>
+
+<script type="text/javascript"><!--
+        google_ad_client = "pub-8973208330688044";
+        google_ad_width = 125;
+        google_ad_height = 125;
+        google_ad_format = "125x125_as_rimg";
+        google_cpa_choice = "CAAQ0f2XhAIaCA6IC4oIlz0_KK2293M";
+        google_ad_channel = "";
+      //--></script> <script type="text/javascript"
+	src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+        //
+      </script></div>
+
+<div id="bodyColumn">
+<div id="contentBox">
+<div class="section">
+
+<h2>Configuring Scenarios</h2>
+
+<p>In JBehave, there is a separation of concerns between Scenario and Steps classes:</p>
+<ul>
+    <li><a href="javadoc/core/org/jbehave/scenario/Scenario.html">Scenario</a>
+    classes are responsible for the configuration of scenario execution: 
+    there is a one-to-one mapping between executable Scenario classes
+    and textual scenario files.</li>
+    <li><a
+        href="javadoc/core/org/jbehave/scenario/steps/Steps.html">Steps</a>
+    classes contain the Java methods that match the textual steps in the
+    scenarios: which Steps classes are used when executing a scenario is
+    configured via the Scenario class.</li>
+</ul>
+
+<p>Even if each executable Scenario Java class can be configured
+independently, it is good pratice to collect the configuration that
+applies to all Scenarios in an abstract (i.e. not executable) base
+class:</p>
+<pre class="brush: java">
+public abstract class TraderScenario extends JUnitScenario {
+
+    // Define how to resolve textual story or scenarios file based on the Java class
+    private static ScenarioNameResolver resolver = new UnderscoredCamelCaseResolver(".story");
+
+    public TraderScenario(final Class scenarioClass) {
+        super(new PropertyBasedConfiguration() {
+            @Override
+            public ScenarioDefiner forDefiningScenarios() {
+                return new ClasspathScenarioDefiner(resolver, new PatternScenarioParser(keywords()));
+            }
+
+            // Define the scenario reporters
+            @Override
+            public ScenarioReporter forReportingScenarios() {
+                return new ScenarioReporterBuilder(new FilePrintStreamFactory(scenarioClass, resolver))
+                            .with(CONSOLE)
+                            .with(TXT)
+                            .with(HTML)
+                            .with(XML)
+                            .build();
+            }
+
+        });
+
+        // Define the Steps configuration
+        StepsConfiguration configuration = new StepsConfiguration();
+        configuration.useMonitor(new SilentStepMonitor()); // use new PrintStreamStepMonitor() to debug step matching issues
+        configuration.useKeyWords(new I18nKeyWords(Locale.ENGLISH)); // use different Locale for different languages
+        configuration.usePatternBuilder(new PrefixCapturingPatternBuilder("$")); // could use different char (e.g. '%') to identify parameters in annotation patterns
+		configuration.useParameterConverters(new ParameterConverters(
+        		monitor, new DateConverter(new SimpleDateFormat("dd/MM/yyyy"))));  // defines custom converter for Date objects with format dd/MM/yyyy
+        
+        // Define the Steps used by the Scenario class        
+        addSteps(createSteps(configuration));
+    }
+
+    // Here we are instantiating Steps as POJOs
+    protected CandidateSteps[] createSteps(StepsConfiguration configuration) {
+        return new StepsFactory(configuration).createCandidateSteps(new TraderSteps(new TradingService()), new BeforeAfterSteps());
+    }
+</pre>
+
+<p>If we wanted to use an inversion of control container to compose
+our Steps with all its dependencies, all we'd need to do is to override
+the createSteps method using a different StepsFactory and use that as
+your base Scenario class. For example, to use with a Spring container:</p>
+<pre class="brush: java">
+public abstract class SpringTraderScenario extends TraderScenario {
+
+    public SpringTraderScenario(Class scenarioClass) {
+        super(scenarioClass);
+    }
+
+    @Override
+    protected CandidateSteps[] createSteps(StepsConfiguration configuration) {
+        ListableBeanFactory parent = new SpringApplicationContextFactory("org/jbehave/examples/trader/spring/steps.xml")
+                                    .getApplicationContext();
+        return new SpringStepsFactory(configuration, parent).createCandidateSteps();
+    }
+
+}
+</pre>
+
+<p>Once we have a base Scenario class, all we need to do is to
+extend it providing the name of the executable Scenario class that maps
+to the textual scenario file. For example, to map to <b>trader_is_alerted_of_status.story</b>
+using the resolver defined above:</p>
+<pre class="brush: java">
+public class TraderIsAlertedOfStatus extends TraderScenario {
+
+    public TraderIsAlertedOfStatus() {
+        super(TraderIsAlertedOfStatus.class);
+    }
+
+}
+</pre>
+
+<span class="followup">Note that JBehave follow the
+configuration-by-convention approach, by which a default value of the
+configuration element is provided and can be overridden, if so
+desidered.</span>
+
+<h3>Scenario Configuration Elements</h3>
+
+<p>While Scenarios are designed to be highly configurable, they come
+with a default behaviour for the <a
+    href="javadoc/core/org/jbehave/scenario/MostUsefulConfiguration.html">most
+useful configuration</a>. <a
+    href="javadoc/core/org/jbehave/scenario/Configuration.html">Configuration</a>
+is the main interface for configuring all the components of a scenario.</p>
+
+<p>The configurable elements of the scenario include:</p>
+<p><a
+    href="javadoc/core/org/jbehave/scenario/steps/StepCreator.html">StepCreator</a>:
+Represents the strategy for the creation of executable steps from a
+given scenario definition matching a list of candidate steps. The
+default implementation is <a
+    href="javadoc/core/org/jbehave/scenario/steps/UnmatchedToPendingStepCreator.html">UnmatchedToPendingStepCreator</a>.</p>
+<p><a
+    href="javadoc/core/org/jbehave/scenario/parser/ScenarioDefiner.html">ScenarioDefiner</a>:
+Loads scenarios contained in a story from a given scenario class. The
+default implementation is <a
+    href="javadoc/core/org/jbehave/scenario/parser/ClasspathScenarioDefiner.html">ClasspathScenarioDefiner</a>.</p>
+<p><a
+    href="javadoc/core/org/jbehave/scenario/reporters/ScenarioReporter.html">ScenarioReporter</a>:
+Allows the runner to report the state of running scenarios. The default
+implementation is <a
+    href="javadoc/core/org/jbehave/scenario/reporters/PrintStreamScenarioReporter.html">PrintStreamScenarioReporter</a>.</p>
+
+<p><a
+    href="javadoc/core/org/jbehave/scenario/errors/ErrorStrategy.html">ErrorStrategy</a>:
+Allows to define the strategy for error handling. The default value is <a
+    href="javadoc/core/org/jbehave/scenario/errors/ErrorStrategy.html#RETHROW">RETHROW</a>.</p>
+
+<p><a
+    href="javadoc/core/org/jbehave/scenario/definition/KeyWords.html">KeyWords</a>:
+Allows to specify the keywords used. The default value is <a
+    href="javadoc/core/org/jbehave/scenario/di18n/I18nKeyWords.html">I18nKeyWords</a>.</p>
+
+<p>JBehave provides two useful base implementations that users can
+extend to override only the elements that differ from default behaviour:</p>
+<p><a
+    href="javadoc/core/org/jbehave/scenario/MostUsefulConfiguration.html">MostUsefulConfiguration</a>:
+provides default configuration that most user will find appropriate</p>
+<p><a
+    href="javadoc/core/org/jbehave/scenario/PropertyBasedConfiguration.html">PropertyBasedConfiguration</a>:
+overrides default configuration via system properties</p>
+
+<h3>Steps Configuration Elements</h3>
+
+<p>Steps can also be configured to a high degree via the <a
+    href="javadoc/core/org/jbehave/scenario/steps/StepsConfiguration.html">StepsConfiguration</a>.
+Among the elements that can be configured are:</p>
+<p><a
+    href="javadoc/core/org/jbehave/scenario/parser/StepPatternBuilder.html">StepPatternBuilder</a>:
+defaults to <a
+    href="javadoc/core/org/jbehave/scenario/parser/PrefixCapturingPatternBuilder.html">PrefixCapturingPatternBuilder</a>.</p>
+<p><a
+    href="javadoc/core/org/jbehave/scenario/steps/StepMonitor.html">StepMonitor</a>:
+defaults to <a
+    href="javadoc/core/org/jbehave/scenario/steps/SilentStepMonitor.html">SilentStepMonitor</a>,
+useful to either debug the step matching or to describe the steps being
+performed to some output.</p>
+<p><a
+    href="javadoc/core/org/jbehave/scenario/steps/ParameterConverters.html">ParameterConverters</a>:
+facade for collecting user-defined <a
+    href="javadoc/core/org/jbehave/scenario/steps/ParameterConverters.ParameterConverter.html">ParameterConverters</a>.</p>
+<p><a
+    href="javadoc/core/org/jbehave/scenario/definition/KeyWords.html">KeyWords</a>:
+defaults to <a
+    href="javadoc/core/org/jbehave/scenario/i18n/I18nKeyWords.html">I18nKeyWords</a>.</p>
+
+<div class="clear">
+<hr />
+</div>
+
+ <br />
+<br />
+</div>
+</div>
+</div>
+<div class="clear"></div>
+<div id="footer">
+<div class="left">Version 2.5.9 published on 07/06/2010</div>
+<div class="right">&#169; 2003-2010</div>
+<div class="clear"></div>
+</div>
+
+</body>
+
+<script src="http://www.google-analytics.com/urchin.js"
+	type="text/javascript"></script>
+<script type="text/javascript">
+  _uacct = "UA-759606-2";
+  urchinTracker();
+</script>
+
+<!--  SyntaxHighlighter resources:  should be included at end of body -->
+<link rel="stylesheet" type="text/css" href="./style/sh-2.1.364/shCore.css"/>
+<link rel="stylesheet" type="text/css" href="./style/sh-2.1.364/shThemeRDark.css"/>
+<script language="javascript" src="./js/sh-2.1.364/shCore.js"></script>
+<script language="javascript" src="./js/sh-2.1.364/shBrushBash.js"></script>
+<script language="javascript" src="./js/sh-2.1.364/shBrushCss.js"></script>
+<script language="javascript" src="./js/sh-2.1.364/shBrushDiff.js"></script>
+<script language="javascript" src="./js/sh-2.1.364/shBrushGroovy.js"></script>
+<script language="javascript" src="./js/sh-2.1.364/shBrushJava.js"></script>
+<script language="javascript" src="./js/sh-2.1.364/shBrushJScript.js"></script>
+<script language="javascript" src="./js/sh-2.1.364/shBrushPlain.js"></script>
+<script language="javascript" src="./js/sh-2.1.364/shBrushPython.js"></script>
+<script language="javascript" src="./js/sh-2.1.364/shBrushRuby.js"></script>
+<script language="javascript" src="./js/sh-2.1.364/shBrushScala.js"></script>
+<script language="javascript" src="./js/sh-2.1.364/shBrushXml.js"></script>
+<script language="javascript" src="./js/shBrushBdd.js"></script>
+<script type="text/javascript">
+	SyntaxHighlighter.config.clipboardSwf = './js/sh-2.1.364/clipboard.swf';
+    SyntaxHighlighter.defaults['gutter'] = false;
+    SyntaxHighlighter.defaults['toolbar'] = true;    
+	SyntaxHighlighter.all();
+</script>
+
+</html>

@@ -1,0 +1,9 @@
+org.jbehave
+org.jbehave.scenario
+org.jbehave.scenario.annotations
+org.jbehave.scenario.definition
+org.jbehave.scenario.errors
+org.jbehave.scenario.i18n
+org.jbehave.scenario.parser
+org.jbehave.scenario.reporters
+org.jbehave.scenario.steps
