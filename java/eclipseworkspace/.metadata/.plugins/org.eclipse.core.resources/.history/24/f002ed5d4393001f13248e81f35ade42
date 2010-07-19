@@ -1,0 +1,11 @@
+<project name="unittesting" default="easyb" basedir=".">
+    <description>
+        simple example build file
+    </description>
+  <property name="easyblib" location="../classpath4allprojects/easyb-0.9.7"/>
+	<taskdef name="easyb" classname="org.easyb.ant.BehaviorRunnerTask">
+	    <classpath>
+	      <pathelement location="${easyblib}/easyb-xx.jar"/>
+	    </classpath>
+	  </taskdef>
+</project>

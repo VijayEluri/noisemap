@@ -1,0 +1,23 @@
+package test;
+
+import maris.learning.unittesting.*;
+
+public class GridSteps {
+
+	  private Person p;
+
+	  @Given("a person with no name and without a maximum number of books he can borrow")
+	  public void thePerson() {
+	  }
+
+	  @When("I record him to my Personal Lending Library")
+	  public void iToggleTheCellAt(int column, int row) {
+	      p = new Person();
+	  }
+
+	  @Then("his name should be $name")
+	  public void theGridShouldLookLike(String grid) {
+	      Ensure.ensureThat(renderer.asString(), CoreMatchers.equalTo(grid));
+	  }
+
+	}

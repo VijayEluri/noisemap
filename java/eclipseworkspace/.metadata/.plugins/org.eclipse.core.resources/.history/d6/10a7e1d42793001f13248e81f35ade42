@@ -1,0 +1,15 @@
+package test;
+
+import static org.junit.Assert.*;
+import org.junit.Test;
+import maris.learning.unittesting.*;
+
+public class PersonTest {
+
+	@Test
+	public void testPerson() {
+		Person p = new Person();
+		assertEquals("unknown name",p.getName());
+	}
+
+}

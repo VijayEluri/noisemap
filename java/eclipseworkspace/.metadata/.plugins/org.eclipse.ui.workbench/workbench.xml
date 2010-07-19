@@ -22,6 +22,8 @@
 <coolItem id="group.nav" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.ui.workbench.navigate" itemType="typeToolBarContribution" x="172" y="34"/>
 <coolItem id="group.editor" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ant.ui.internal.editor.AntEditor" itemType="typePlaceholder" x="-1" y="-1"/>
+<coolItem id="org.eclipse.ui.DefaultTextEditor" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="org.eclipse.jdt.ui.ClassFileEditor" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="org.eclipse.jdt.ui.CompilationUnitEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="group.help" itemType="typeGroupMarker"/>
@@ -38,9 +40,9 @@
 </folder>
 </info>
 </editorArea>
-<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Person.java" partName="Person.java" path="/home/nickmeet/smallprojects/smallprojects/java/eclipseworkspace/unittesting/src/maris/learning/unittesting/Person.java" title="Person.java" tooltip="unittesting/src/maris/learning/unittesting/Person.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/unittesting/src/maris/learning/unittesting/Person.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="4" selectionTopPixel="0"/>
+<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Printing.java" partName="Printing.java" path="/home/nickmeet/smallprojects/smallprojects/java/eclipseworkspace/gui/src/maris/learning/Printing.java" title="Printing.java" tooltip="gui/src/maris/learning/Printing.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/gui/src/maris/learning/Printing.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
 </editor>
 </editors>
 <views>
@@ -65,8 +67,7 @@
 <view id="org.eclipse.datatools.connectivity.DataSourceExplorerNavigator" partName="Data Source Explorer"/>
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
-<expanded>&#x0A;<category IMemento.internal.id="Warnings"/>
-<category IMemento.internal.id="Warnings (2 items)"/>
+<expanded>&#x0A;<category IMemento.internal.id="Errors"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="0" org.eclipse.ui.ide.markerType="0" org.eclipse.ui.ide.pathField="0" org.eclipse.ui.ide.resourceField="0" org.eclipse.ui.ide.severityAndDescriptionField="0"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
@@ -80,7 +81,7 @@
 <viewState group_libraries="1" layout="2" linkWithEditor="0" rootMode="1" workingSetName="">
 <customFilters userDefinedPatternsEnabled="false">
 <xmlDefinedFilters>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.LibraryFilter" isEnabled="false"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.LibraryFilter" isEnabled="true"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.CuAndClassFileFilter" isEnabled="false"/>
 <child filterId="org.eclipse.pde.ui.ExternalPluginLibrariesFilter1" isEnabled="true"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer_patternFilterId_RemoteSystemsConnections" isEnabled="true"/>
@@ -92,7 +93,7 @@
 <child filterId="org.eclipse.mylyn.java.ui.MembersFilter" isEnabled="false"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.LocalTypesFilter" isEnabled="false"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.StaticsFilter" isEnabled="false"/>
-<child filterId="org.eclipse.jdt.ui.PackageExplorer.ContainedLibraryFilter" isEnabled="false"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.ContainedLibraryFilter" isEnabled="true"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.NonJavaElementFilter" isEnabled="false"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.NonSharedProjectsFilter" isEnabled="false"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.ClosedProjectsFilter" isEnabled="false"/>
@@ -106,6 +107,10 @@
 <child filterId="org.eclipse.jdt.ui.PackageExplorer_patternFilterId_RemoteSystemsTempFiles" isEnabled="true"/>
 <child filterId="org.eclipse.jdt.ui.PackageExplorer.SyntheticMembersFilter" isEnabled="true"/>
 </xmlDefinedFilters>
+<lastRecentlyUsedFilters>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.ContainedLibraryFilter"/>
+<child filterId="org.eclipse.jdt.ui.PackageExplorer.LibraryFilter"/>
+</lastRecentlyUsedFilters>
 </customFilters>
 </viewState>
 </view>
@@ -134,7 +139,7 @@
 <viewState/>
 </view>
 </views>
-<perspectives activePart="org.eclipse.jdt.ui.PackageExplorer" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
+<perspectives activePart="org.eclipse.jdt.ui.CompilationUnitEditor" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.eclipse.jst.j2ee.internal.perspective.J2EEPerspective" id="org.eclipse.jst.j2ee.J2EEPerspective" label="Java EE"/>
 <alwaysOnActionSet id="org.eclipse.mylyn.context.ui.actionSet"/>
@@ -325,8 +330,8 @@
 <page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="LabelNotFound"/>
 </folder>
 </info>
-<info part="org.eclipse.ui.editorss" ratio="0.24950495" ratioLeft="252" ratioRight="758" relationship="2" relative="left"/>
-<info folder="true" part="bottom" ratio="0.7491749" ratioLeft="454" ratioRight="152" relationship="4" relative="org.eclipse.ui.editorss">
+<info part="org.eclipse.ui.editorss" ratio="0.25689518" ratioLeft="326" ratioRight="943" relationship="2" relative="left"/>
+<info folder="true" part="bottom" ratio="0.51480263" ratioLeft="313" ratioRight="295" relationship="4" relative="org.eclipse.ui.editorss">
 <folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
 <page content="org.eclipse.jdt.ui.JavadocView" label="Javadoc"/>
@@ -364,47 +369,167 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/delete/src/maris/learning/Printing.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/gui/src/maris/learning/Printing.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/unittesting/src/maris/learning/unittesting/Person.java"/>
-<editor factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" org.eclipse.jdt.ui.ClassFileIdentifier="=unittesting/\/usr\/lib\/jvm\/java-6-openjdk\/jre\/lib\/rt.jar&lt;java.lang(Object.class"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.DefaultTextEditor" path="/unittesting/src/test/default_person.story"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/unittesting/src/test/GridSteps.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/unittesting/src/test/DefaultPerson.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/unittesting/src/test/PersonTest.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/unittesting/src/test/NameSteps.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.DefaultTextEditor" path="/unittesting/src/test/MoneyStory.groovy"/>
+<editor factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" org.eclipse.jdt.ui.ClassFileIdentifier="=unittesting/\/home\/nickmeet\/smallprojects\/smallprojects\/java\/eclipseworkspace\/classpath4allprojects\/easyb-0.9.7\/easyb-0.9.7.jar&lt;org.easyb.util(BehaviorStepType.class"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ant.ui.internal.editor.AntEditor" path="/unittesting/build.xml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ant.ui.internal.editor.AntEditor" path="/gui/runnable.xml"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/gui/src/maris/learning/Printing.java"/>
 </editors>
-<item historyLabel="Printing.java" index="0">
-<position info="not_deleted" x="25" y="0"/>
+<item historyLabel="DefaultPerson.java" index="3">
+<position info="not_deleted" x="15" y="0"/>
 </item>
-<item historyLabel="Printing.java" index="1">
-<position info="not_deleted" x="54" y="0"/>
+<item historyLabel="DefaultPerson.java" index="3">
+<position info="not_deleted" x="14" y="0"/>
 </item>
-<item historyLabel="Person.java" index="2">
-<position info="not_deleted" x="52" y="0"/>
+<item historyLabel="GridSteps.java" index="2">
+<position info="not_deleted" x="66" y="9"/>
 </item>
-<item historyLabel="Object.class" index="3">
+<item historyLabel="DefaultPerson.java" index="3">
+<position info="not_deleted" x="148" y="0"/>
+</item>
+<item historyLabel="GridSteps.java" index="2">
+<position info="not_deleted" x="66" y="9"/>
+</item>
+<item historyLabel="DefaultPerson.java" index="3">
+<position info="not_deleted" x="148" y="0"/>
+</item>
+<item historyLabel="default_person.story" index="1">
+<position info="not_deleted" x="134" y="31"/>
+</item>
+<item historyLabel="Person.java" index="0">
+<position info="not_deleted" x="300" y="0"/>
+</item>
+<item historyLabel="PersonTest.java" index="4">
+<position/>
+</item>
+<item historyLabel="Person.java" index="0">
+<position info="not_deleted" x="300" y="0"/>
+</item>
+<item historyLabel="PersonTest.java" index="4">
+<position/>
+</item>
+<item historyLabel="GridSteps.java" index="2">
 <position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="Person.java" index="2">
-<position info="not_deleted" x="52" y="0"/>
+<item historyLabel="GridSteps.java" index="2">
+<position info="not_deleted" x="66" y="9"/>
 </item>
-<item historyLabel="Person.java" index="2">
-<position info="not_deleted" x="194" y="0"/>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
 </item>
-<item historyLabel="Person.java" index="2">
-<position info="not_deleted" x="189" y="4"/>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
 </item>
-<item historyLabel="Person.java" index="2">
-<position info="not_deleted" x="199" y="0"/>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
 </item>
-<item historyLabel="Person.java" index="2">
-<position info="not_deleted" x="165" y="0"/>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
 </item>
-<item historyLabel="Printing.java" index="4">
-<position info="not_deleted" x="581" y="0"/>
+<item historyLabel="PersonTest.java" index="4">
+<position/>
 </item>
-<item historyLabel="Person.java" index="2">
-<position info="not_deleted" x="165" y="0"/>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
 </item>
-<item active="true" historyLabel="Person.java" index="2">
-<position info="not_deleted" x="4" y="0"/>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
+</item>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
+</item>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
+</item>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
+</item>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
+</item>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
+</item>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
+</item>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
+</item>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
+</item>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
+</item>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
+</item>
+<item historyLabel="NameSteps.java" index="5">
+<position/>
+</item>
+<item historyLabel="NameSteps.java" index="5">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="NameSteps.java" index="5">
+<position info="not_deleted" x="562" y="0"/>
+</item>
+<item historyLabel="PersonTest.java" index="4">
+<position/>
+</item>
+<item historyLabel="NameSteps.java" index="5">
+<position info="not_deleted" x="562" y="0"/>
+</item>
+<item historyLabel="PersonTest.java" index="4">
+<position/>
+</item>
+<item historyLabel="MoneyStory.groovy" index="6">
+<position info="not_deleted" x="66" y="0"/>
+</item>
+<item historyLabel="PersonTest.java" index="4">
+<position info="not_deleted" x="78" y="36"/>
+</item>
+<item historyLabel="MoneyStory.groovy" index="6">
+<position info="not_deleted" x="451" y="0"/>
+</item>
+<item historyLabel="PersonTest.java" index="4">
+<position info="not_deleted" x="326" y="13"/>
+</item>
+<item historyLabel="MoneyStory.groovy" index="6">
+<position info="not_deleted" x="437" y="0"/>
+</item>
+<item historyLabel="BehaviorStepType.class" index="7">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="MoneyStory.groovy" index="6">
+<position info="not_deleted" x="437" y="0"/>
+</item>
+<item historyLabel="build.xml" index="8">
+<position/>
+</item>
+<item historyLabel="MoneyStory.groovy" index="6">
+<position info="not_deleted" x="437" y="0"/>
+</item>
+<item historyLabel="build.xml" index="8">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="MoneyStory.groovy" index="6">
+<position info="not_deleted" x="437" y="0"/>
+</item>
+<item historyLabel="PersonTest.java" index="4">
+<position info="not_deleted" x="326" y="13"/>
+</item>
+<item historyLabel="runnable.xml" index="9">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item active="true" historyLabel="Printing.java" index="10">
+<position info="not_deleted" x="0" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -423,11 +548,38 @@
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Person.java" tooltip="unittesting/src/maris/learning/unittesting/Person.java">
-<persistable path="/unittesting/src/maris/learning/unittesting/Person.java"/>
-</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Printing.java" tooltip="gui/src/maris/learning/Printing.java">
 <persistable path="/gui/src/maris/learning/Printing.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ant.ui.internal.editor.AntEditor" name="runnable.xml" tooltip="gui/runnable.xml">
+<persistable path="/gui/runnable.xml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ant.ui.internal.editor.AntEditor" name="build.xml" tooltip="unittesting/build.xml">
+<persistable path="/unittesting/build.xml"/>
+</file>
+<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="BehaviorStepType.class" tooltip="org.easyb.util.BehaviorStepType">
+<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=unittesting/\/home\/nickmeet\/smallprojects\/smallprojects\/java\/eclipseworkspace\/classpath4allprojects\/easyb-0.9.7\/easyb-0.9.7.jar&lt;org.easyb.util(BehaviorStepType.class"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="PersonTest.java" tooltip="unittesting/src/test/PersonTest.java">
+<persistable path="/unittesting/src/test/PersonTest.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.DefaultTextEditor" name="MoneyStory.groovy" tooltip="unittesting/src/test/MoneyStory.groovy">
+<persistable path="/unittesting/src/test/MoneyStory.groovy"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NameSteps.java" tooltip="unittesting/src/test/NameSteps.java">
+<persistable path="/unittesting/src/test/NameSteps.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="GridSteps.java" tooltip="unittesting/src/test/GridSteps.java">
+<persistable path="/unittesting/src/test/GridSteps.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DefaultPerson.java" tooltip="unittesting/src/test/DefaultPerson.java">
+<persistable path="/unittesting/src/test/DefaultPerson.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.DefaultTextEditor" name="default_person.story" tooltip="unittesting/src/test/default_person.story">
+<persistable path="/unittesting/src/test/default_person.story"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Person.java" tooltip="unittesting/src/maris/learning/unittesting/Person.java">
+<persistable path="/unittesting/src/maris/learning/unittesting/Person.java"/>
 </file>
 <file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="Object.class" tooltip="java.lang.Object">
 <persistable org.eclipse.jdt.ui.ClassFileIdentifier="=unittesting/\/usr\/lib\/jvm\/java-6-openjdk\/jre\/lib\/rt.jar&lt;java.lang(Object.class"/>
