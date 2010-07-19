@@ -1,0 +1,22 @@
+/**
+ * 
+ */
+package maris.learning.unittesting;
+
+/**
+ * @author nickmeet
+ *
+ */
+public class Person {
+	private String name;
+	private int maxbooks;
+	/**
+	 * @param name
+	 * @param maxbooks the maximum number of books he can borrow
+	 */
+	public Person(String name, int maxbooks) {
+		this.name = name;
+		this.maxbooks = maxbooks;
+	}
+
+}

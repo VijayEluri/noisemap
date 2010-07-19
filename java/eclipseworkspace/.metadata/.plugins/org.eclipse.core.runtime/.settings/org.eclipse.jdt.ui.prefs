@@ -1,6 +1,8 @@
-#Fri Jul 16 17:39:10 EEST 2010
+#Sun Jul 18 19:50:05 EEST 2010
 content_assist_proposals_foreground=58,57,53
 spelling_locale_initialized=true
+content_assist_disabled_computers=org.eclipse.jdt.ui.javaAllProposalCategory\u0000org.eclipse.jdt.ui.javaNoTypeProposalCategory\u0000org.eclipse.jdt.ui.textProposalCategory\u0000org.eclipse.jdt.ui.javaTypeProposalCategory\u0000
+markOccurrences=false
 org.eclipse.jdt.ui.text.templates_migrated=true
 useAnnotationsPrefPage=true
 eclipse.preferences.version=1
@@ -11,9 +13,9 @@ fontPropagated=true
 org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
 org.eclipse.jdt.ui.javadoclocations.migrated=true
 proposalOrderMigrated=true
+content_assist_proposals_background=255,255,255
 org.eclipse.jdt.ui.formatterprofiles.version=11
 org.eclipse.jdt.internal.ui.navigator.layout=2
-content_assist_proposals_background=255,255,255
 content_assist_number_of_computers=19
 useQuickDiffPrefPage=true
 org.eclipse.jdt.ui.text.custom_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
