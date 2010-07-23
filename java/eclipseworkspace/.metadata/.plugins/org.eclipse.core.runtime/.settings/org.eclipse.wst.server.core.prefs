@@ -1,0 +1,4 @@
+#Thu Jul 22 15:53:59 EEST 2010
+module-start-timeout=300000
+runtimes=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<runtimes>\n  <runtime id\="Liferay v6.0 (Tomcat 6)" location\="/home/nickmeet/liferay/liferay-portal-6.0.2/tomcat-6.0.26" name\="Liferay v6.0 (Tomcat 6)" runtime-type-id\="com.liferay.ide.eclipse.server.tomcat.runtime.60" timestamp\="0"/>\n</runtimes>\n
+eclipse.preferences.version=1

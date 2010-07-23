@@ -1,0 +1,23 @@
+<maris.learning.persistence.MyLibrary>
+  <name>Test Drive Library</name>
+  <books>
+    <maris.learning.persistence.Book>
+      <title>War and Peace</title>
+      <author>Tolstoy</author>
+    </maris.learning.persistence.Book>
+    <maris.learning.persistence.Book>
+      <title>Great Expectations</title>
+      <author>Charles Dickens</author>
+    </maris.learning.persistence.Book>
+  </books>
+  <people>
+    <maris.learning.persistence.Person>
+      <name>Jim</name>
+      <maximumBooks>3</maximumBooks>
+    </maris.learning.persistence.Person>
+    <maris.learning.persistence.Person>
+      <name>Sue</name>
+      <maximumBooks>3</maximumBooks>
+    </maris.learning.persistence.Person>
+  </people>
+</maris.learning.persistence.MyLibrary>

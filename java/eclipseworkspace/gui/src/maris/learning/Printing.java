@@ -9,20 +9,23 @@ public class Printing {
      * event-dispatching thread.
      */
     private static void createAndShowGUI() {
-        //Create and set up the window.
-        JFrame frame = new JFrame("HelloWorldSwing");
+        JFrame frame = new JFrame("System Properties");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Add the ubiquitous "Hello World" label.
-        JLabel label = new JLabel("Your Operating System is: "+
-				System.getProperty("os.name"));
+        String text = "<LI>Architecture: "+ System.getProperty("os.arch");
+        text += "<LI>Operating System: "+
+        	System.getProperty("os.name")+" "+
+        	System.getProperty("os.version");
+        text += "<LI>Java version: "+ System.getProperty("java.version");        
+        text += "<LI>Please also find your eclipse version.";
+        String html =
+            "<html>Your configuration may be usefull to engineers:<UL> "+text+"</UL></html>";
+        JLabel label = new JLabel(html);
         frame.getContentPane().add(label);
 
-        //Display the window.
-        frame.pack();
+        frame.pack();	//Display a big enough window.
         frame.setVisible(true);
     }
-
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.

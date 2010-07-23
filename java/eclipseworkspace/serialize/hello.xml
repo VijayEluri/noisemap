@@ -1,0 +1,23 @@
+<maris.learning.serialize.MyLibrary>
+  <name>Test Drive Library</name>
+  <books>
+    <maris.learning.serialize.Book>
+      <title>War and Peace</title>
+      <author>Tolstoy</author>
+    </maris.learning.serialize.Book>
+    <maris.learning.serialize.Book>
+      <title>Great Expectations</title>
+      <author>Charles Dickens</author>
+    </maris.learning.serialize.Book>
+  </books>
+  <people>
+    <maris.learning.serialize.Person>
+      <name>Jim</name>
+      <maximumBooks>3</maximumBooks>
+    </maris.learning.serialize.Person>
+    <maris.learning.serialize.Person>
+      <name>Sue</name>
+      <maximumBooks>3</maximumBooks>
+    </maris.learning.serialize.Person>
+  </people>
+</maris.learning.serialize.MyLibrary>

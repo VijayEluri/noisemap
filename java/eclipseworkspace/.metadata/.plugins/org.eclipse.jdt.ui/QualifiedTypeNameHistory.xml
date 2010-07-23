@@ -4,4 +4,16 @@
 <fullyQualifiedTypeName name="org.jbehave.scenario.steps.Steps"/>
 <fullyQualifiedTypeName name="org.jbehave.scenario.annotations.Given"/>
 <fullyQualifiedTypeName name="org.jbehave.scenario.annotations.When"/>
+<fullyQualifiedTypeName name="java.util.Dictionary"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="java.lang.StackTraceElement"/>
+<fullyQualifiedTypeName name="javax.xml.parsers.DocumentBuilderFactory"/>
+<fullyQualifiedTypeName name="org.w3c.dom.Document"/>
+<fullyQualifiedTypeName name="com.thoughtworks.xstream.XStream"/>
+<fullyQualifiedTypeName name="com.thoughtworks.xstream.io.xml.DomDriver"/>
+<fullyQualifiedTypeName name="javax.xml.bind.JAXBContext"/>
+<fullyQualifiedTypeName name="javax.xml.bind.Marshaller"/>
+<fullyQualifiedTypeName name="javax.xml.bind.JAXBElement"/>
+<fullyQualifiedTypeName name="javax.xml.namespace.QName"/>
+<fullyQualifiedTypeName name="java.lang.reflect.ParameterizedType"/>
 </qualifiedTypeNameHistroy>

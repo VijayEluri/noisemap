@@ -1,4 +1,4 @@
-#Mon Jul 19 17:59:37 EEST 2010
+#Wed Jul 21 19:07:05 EEST 2010
 content_assist_proposals_foreground=58,57,53
 org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
 org.eclipse.jdt.ui.PackageExplorer.LibraryFilter=true
@@ -6,6 +6,7 @@ content_assist_proposals_background=255,255,255
 useQuickDiffPrefPage=true
 lastRecentlyUsedFilters=org.eclipse.jdt.ui.PackageExplorer.ContainedLibraryFilter,org.eclipse.jdt.ui.PackageExplorer.LibraryFilter,
 content_assist_number_of_computers=19
+command=/usr/lib/jvm/java-6-openjdk/bin/javadoc
 CustomFiltersActionGroup.org.eclipse.jdt.ui.PackageExplorer.TAG_DUMMY_TO_TEST_EXISTENCE=storedViewPreferences
 useAnnotationsPrefPage=true
 markOccurrences=false

@@ -1,0 +1,6 @@
+#Fri Jul 23 19:57:37 EEST 2010
+forceRebuildOnUpgrade=true
+eclipse.m2.downloadJavadoc=true
+eclipse.preferences.version=1
+searchIncludesJavadoc=true
+eclipse.m2.debugOutput=true
