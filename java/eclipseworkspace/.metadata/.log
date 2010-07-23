@@ -284,3 +284,6 @@ java.lang.StringIndexOutOfBoundsException: String index out of range: -1
 	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:619)
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:574)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1407)
+
+!ENTRY org.apache.ivyde.eclipse 1 0 2010-07-24 00:11:45.760
+!MESSAGE resolved dependencies of ivy.xml in 'serialize'
