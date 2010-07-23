@@ -293,3 +293,42 @@ java.lang.StringIndexOutOfBoundsException: String index out of range: -1
 
 !ENTRY org.apache.ivyde.eclipse 1 0 2010-07-24 00:32:40.464
 !MESSAGE resolved dependencies of ivy.xml in 'myio'
+
+!ENTRY org.apache.ivyde.eclipse 1 0 2010-07-24 00:42:56.065
+!MESSAGE resolved dependencies of ivy.xml in 'myio'
+
+!ENTRY org.apache.ivyde.eclipse 4 4 2010-07-24 00:42:56.067
+!MESSAGE Error while resolving dependencies for ivy.xml
+problem during retrieve of #: java.lang.RuntimeException: Multiple artifacts of the module com.thoughtworks.xstream#xstream;1.3.1 are retrieved to the same file! Update the retrieve pattern  to fix this error.
+!STACK 0
+java.lang.RuntimeException: problem during retrieve of #: java.lang.RuntimeException: Multiple artifacts of the module com.thoughtworks.xstream#xstream;1.3.1 are retrieved to the same file! Update the retrieve pattern  to fix this error.
+	at org.apache.ivy.core.retrieve.RetrieveEngine.retrieve(RetrieveEngine.java:206)
+	at org.apache.ivy.Ivy.retrieve(Ivy.java:540)
+	at org.apache.ivyde.eclipse.cpcontainer.IvyResolveJob.maybeRetrieve(IvyResolveJob.java:506)
+	at org.apache.ivyde.eclipse.cpcontainer.IvyResolveJob.access$7(IvyResolveJob.java:493)
+	at org.apache.ivyde.eclipse.cpcontainer.IvyResolveJob$1.run(IvyResolveJob.java:309)
+Caused by: java.lang.RuntimeException: Multiple artifacts of the module com.thoughtworks.xstream#xstream;1.3.1 are retrieved to the same file! Update the retrieve pattern  to fix this error.
+	at org.apache.ivy.core.retrieve.RetrieveEngine.determineArtifactsToCopy(RetrieveEngine.java:360)
+	at org.apache.ivy.core.retrieve.RetrieveEngine.retrieve(RetrieveEngine.java:104)
+	... 4 more
+
+!ENTRY org.apache.ivyde.eclipse 1 0 2010-07-24 00:52:10.127
+!MESSAGE resolved dependencies of ivy.xml in 'myio'
+
+!ENTRY org.apache.ivyde.eclipse 1 0 2010-07-24 00:56:56.083
+!MESSAGE resolved dependencies of ivy.xml in 'myio'
+
+!ENTRY org.apache.ivyde.eclipse 4 4 2010-07-24 00:56:56.084
+!MESSAGE Error while resolving dependencies for ivy.xml
+problem during retrieve of #: java.lang.RuntimeException: Multiple artifacts of the module com.thoughtworks.xstream#xstream;1.3.1 are retrieved to the same file! Update the retrieve pattern  to fix this error.
+!STACK 0
+java.lang.RuntimeException: problem during retrieve of #: java.lang.RuntimeException: Multiple artifacts of the module com.thoughtworks.xstream#xstream;1.3.1 are retrieved to the same file! Update the retrieve pattern  to fix this error.
+	at org.apache.ivy.core.retrieve.RetrieveEngine.retrieve(RetrieveEngine.java:206)
+	at org.apache.ivy.Ivy.retrieve(Ivy.java:540)
+	at org.apache.ivyde.eclipse.cpcontainer.IvyResolveJob.maybeRetrieve(IvyResolveJob.java:506)
+	at org.apache.ivyde.eclipse.cpcontainer.IvyResolveJob.access$7(IvyResolveJob.java:493)
+	at org.apache.ivyde.eclipse.cpcontainer.IvyResolveJob$1.run(IvyResolveJob.java:309)
+Caused by: java.lang.RuntimeException: Multiple artifacts of the module com.thoughtworks.xstream#xstream;1.3.1 are retrieved to the same file! Update the retrieve pattern  to fix this error.
+	at org.apache.ivy.core.retrieve.RetrieveEngine.determineArtifactsToCopy(RetrieveEngine.java:360)
+	at org.apache.ivy.core.retrieve.RetrieveEngine.retrieve(RetrieveEngine.java:104)
+	... 4 more
