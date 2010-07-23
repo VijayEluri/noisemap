@@ -290,3 +290,6 @@ java.lang.StringIndexOutOfBoundsException: String index out of range: -1
 
 !ENTRY org.apache.ivyde.eclipse 1 0 2010-07-24 00:18:35.119
 !MESSAGE resolved dependencies of ivy.xml in 'myio'
+
+!ENTRY org.apache.ivyde.eclipse 1 0 2010-07-24 00:32:40.464
+!MESSAGE resolved dependencies of ivy.xml in 'myio'
