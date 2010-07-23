@@ -1,0 +1,23 @@
+<MyLibrary>
+  <name>Test Drive Library</name>
+  <books>
+    <Book>
+      <title>War and Peace</title>
+      <author>Tolstoy</author>
+    </Book>
+    <Book>
+      <title>Great Expectations</title>
+      <author>Charles Dickens</author>
+    </Book>
+  </books>
+  <people>
+    <Person>
+      <name>Jim</name>
+      <maximumBooks>3</maximumBooks>
+    </Person>
+    <Person>
+      <name>Sue</name>
+      <maximumBooks>3</maximumBooks>
+    </Person>
+  </people>
+</MyLibrary>
