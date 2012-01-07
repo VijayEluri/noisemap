@@ -38,6 +38,7 @@
     <target name="mayecho2" unless="isChecksumEqual">
       <echo message="No!"/>
     </target>
+    
     <!-- <condition property="isChecksumEqual" value="true">
             <filesmatch file1="noisemap.jar" file2="dist/noisemap.jar"/> 
         </condition> -->
