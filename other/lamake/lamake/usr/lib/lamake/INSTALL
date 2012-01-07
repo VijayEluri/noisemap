@@ -1,7 +1,0 @@
-REQUIREMENTS
-
- - gedit-latex-plugin
-
-MANUAL INSTALLATION
-
-Copy the files of this folder to '~/.lamake' where '~' is your home director. Restart gedit and activate the gedit-latex-plugin in the plugins configuration. Goto gedit->edit->preferences->plugins-> gedit latex plugin -> configure -> tools -> configure -> replace all jobs with "sh ~/.lamake/job.sh"

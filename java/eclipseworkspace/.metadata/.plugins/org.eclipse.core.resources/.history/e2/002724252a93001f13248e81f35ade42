@@ -1,8 +1,0 @@
-package test;
-
-public class DefaultPerson extends JUnitStory {
-
-	  public ICanToggleACell() {
-	      addSteps(new InstanceStepsFactory(new GridSteps()).createCandidateSteps()); // varargs, can have lots of steps
-	  }
-	}
