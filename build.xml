@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="noisemap" default="default" basedir=".">
-    <description>Builds, tests, and runs the project noisemap.</description>
-    <!-- 
-    For deployment, not for local execution:
-    Make sure you add the url at netbeans->properties->Web Start
-    and remove the Jsyn from master-application.jnlp as we embedded it
-    in the same jar in order to sign it
-    -->
+    <description>
+        For locally executing the class WebStart, modify the Web Start of project properties
+        For checking if the code is in sync with the online jar file, choose "clean and build project" from netbeans    
+    </description>
     <import file="nbproject/build-impl.xml"/>
-    <target name="generate-html-preview">  <!-- -post-jar didn't work :p --> 
-        <copy todir="../site">
-            <fileset file="dist/noisemap.jar"/>                         <!-- signed version -->
-            <fileset file="dist/launch.jnlp"/>                      <!-- generated from master-application.jnlp-->
-        </copy>
-        <echo message="Copied dist folder files to site folder. Dropbox syncs it with my workstation at craft where WinSCP syncs it with craftsrv5. This way i can update the site from my PC and from shiftedit.net/home But sometimes WinSCP needs to be turned off and dropbox to be restarted. "/>
-    </target>
+    <!-- Jsyn is removed from master-application.jnlp as we embedded it in the same jar in order to sign it -->
     <target name="-pre-jar">
         <unzip src="lib/jsyn-beta-16.4.4.jar" dest="build/classes">
             <patternset>
@@ -23,6 +14,34 @@
             </patternset>
         </unzip>    
     </target>
+    
+    <target name="generate-html-preview"> 
+        <!-- For internal use: a clean build updates the website -->
+        <copy todir="../../Dropbox/courses/software/site">
+            <fileset file="dist/noisemap.jar"/>                         <!-- signed version -->
+            <fileset file="dist/launch.jnlp"/>                      <!-- generated from master-application.jnlp-->
+        </copy>
+        <echo message="Copied dist folder files to site folder. Dropbox syncs it with my workstation at craft where WinSCP syncs it with craftsrv5. This way i can update the site from my PC and from shiftedit.net/home But sometimes WinSCP needs to be turned off and dropbox to be restarted. "/>
+        
+        <get src="http://craftsrv5.epfl.ch/projects/noisemap/noisemap.jar" dest="noisemap.jar" verbose="true"/>
+        <checksum file="noisemap.jar" algorithm="SHA-512"/>     <!-- generates noisemap.jar.SHA-512 -->
+        <copy file="noisemap.jar.SHA-512" todir="dist"/>
+        <condition property="isChecksumEqual">
+          <checksum algorithm="SHA-512" file="dist/noisemap.jar"/>
+        </condition>
+        <antcall target="mayecho"/>
+        <antcall target="mayecho2"/>
+    </target>
+    <target name="mayecho" if="isChecksumEqual">
+      <echo message="Yes!"/>
+    </target>
+    <target name="mayecho2" unless="isChecksumEqual">
+      <echo message="No!"/>
+    </target>
+    <!-- <condition property="isChecksumEqual" value="true">
+            <filesmatch file1="noisemap.jar" file2="dist/noisemap.jar"/> 
+        </condition> -->
+    
     <!--
       -pre-init:                 called before initialization of project properties
       -post-init:                called after initialization of project properties
