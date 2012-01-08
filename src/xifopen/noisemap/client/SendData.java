@@ -6,24 +6,23 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * sends nearest BSSID and noise level to a PHP page with the POST method
+ * Sends nearest BSSID and noise level to a PHP page with the POST method
  */
 public class SendData {
     public void test(){
-        System.out.println(new SendData().send("http://craftsrv5.epfl.ch/projects/noisemap/help.php",
-                "x=100&y=100&noise=80")); // you can first test the server using http://hurl.it
+        new SendData().send("http://craftsrv5.epfl.ch/projects/noisemap/help.php",
+                "x=100&y=100&noise=80"); // To check the server side part (the output) use http://hurl.it
     }
     /**
      * @param targetURL
      * @param urlParameters like x=1&y=2
-     * @return 0 on success or -1 if the URL is malformed or the HTTP status code
      */
-    public static int send(String targetURL, String urlParameters){
+    public void send(String targetURL, String urlParameters){
         int status = 0;
         URL url;
         HttpURLConnection conn = null;  
         try {
-            System.setProperty("http.keepAlive", "false");
+          System.setProperty("http.keepAlive", "false");
           url = new URL(targetURL);
           conn = (HttpURLConnection)url.openConnection();
           conn.setRequestMethod("POST");
@@ -41,15 +40,33 @@ public class SendData {
           status = conn.getResponseCode();
           if(status == HttpURLConnection.HTTP_OK)
               status = 0;
+          else
+              throw new Issue("Status: "+status+" URL: "+targetURL);
         }
         catch (IOException ex) {
-          status = -1;
+          throw new Issue("Malformed URL: "+targetURL);
         }
         finally {
           if(conn != null) {
             conn.disconnect(); 
           }
         }
-        return status;
+    }
+    /**
+     * Instead of polluting the java code with methods that throw exceptions,
+     * a class can throw runtime exceptions as an inner class
+     * Writing description of erroneous cases can describe indirectly the
+     * functionality of the code in normal execution
+     */
+    public class Issue extends RuntimeException{
+        private String mistake;
+        public Issue(String say_what_happened){
+            super(say_what_happened);
+            String precondition = "Please check your internet connection.\n";
+            mistake = precondition + say_what_happened;
+        }
+        public String get(){
+            return mistake;
+        }
     }
 }

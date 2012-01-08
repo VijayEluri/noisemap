@@ -20,6 +20,7 @@
         <copy todir="../../Dropbox/courses/software/site">
             <fileset file="dist/noisemap.jar"/>                         <!-- signed version -->
             <fileset file="dist/launch.jnlp"/>                      <!-- generated from master-application.jnlp-->
+            <fileset file="android/x.apk"/>
         </copy>
         <echo message="Copied dist folder files to site folder. Dropbox syncs it with my workstation at craft where WinSCP syncs it with craftsrv5. This way i can update the site from my PC and from shiftedit.net/home But sometimes WinSCP needs to be turned off and dropbox to be restarted. "/>
         

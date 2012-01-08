@@ -1,16 +1,12 @@
 package xifopen.noisemap.client;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Locator {
 
@@ -18,7 +14,7 @@ public class Locator {
         String nbssid = null;	// Or:We could make training data to deal with walls and reflections
         try {
             List<Map<String, String>> measurements = new ArrayList<Map<String, String>>();
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 1; i++) {   // some machines are too slow...
                 Thread.sleep(400);
                 if (t != null) {
                     t.progressed(80 / 3);        // random value
@@ -38,7 +34,8 @@ public class Locator {
                 }
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(Locator.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Issue("Interrupted while waiting for "+
+                    "next WiFi detection. Multiple measurements take place for convenience.");
         }
         return nbssid;
     }
@@ -52,7 +49,7 @@ public class Locator {
         else if(isMac)
             result = detectOnOSX();
         else
-            throw new UnsupportedOperationException(os);
+            throw new Issue(new UnsupportedOperationException(os).getMessage());
         return result;
     }
     /**
@@ -107,51 +104,49 @@ public class Locator {
         boolean tryagain = true;
         List<String> r = null;
         for(int tried=0; tryagain && tried<3; tried++){	// workaround as sometimes the epfl SSID is not detected
-            r = exec("cmd /c netsh wlan show networks mode=bssid");  // OR:netsh wlan show int | findstr "BSSID"
-            if (!r.isEmpty()) {     // cmd is necessary for pipes
-                List<String> list = new ArrayList<String>();
-                List<String> epfl = null;
-                List<String> publicepfl = null;
-                for (int i = 4; i != r.size(); i++) {
-                    String line = r.get(i);
-                    if (line.equals("")) {
-                        String header = list.get(0);
-                        if (header.contains("public-epfl")) {
-                            publicepfl = list;
-                        } else if (header.contains("epfl")) {
-                            epfl = list;
-                        }
-                        list = new ArrayList<String>();
-                    } else {
-                        list.add(line);
+            r = exec("cmd /c netsh wlan show networks mode=bssid");  // OR:netsh wlan show int | findstr "BSSID". cmd is necessary for pipes
+            List<String> list = new ArrayList<String>();
+            List<String> epfl = null;
+            List<String> publicepfl = null;
+            for (int i = 4; i != r.size(); i++) {
+                String line = r.get(i);
+                if (line.equals("")) {
+                    String header = list.get(0);
+                    if (header.contains("public-epfl")) {
+                        publicepfl = list;
+                    } else if (header.contains("epfl")) {
+                        epfl = list;
                     }
-                }
-                if (epfl == null) {
-                    continue;
+                    list = new ArrayList<String>();
                 } else {
-                    epfl.addAll(publicepfl);
-                    for (int i = 0; i != epfl.size(); i++) {
-                        String line = epfl.get(i);
-                        if (line.contains("BSSID")) {
-                            String bssid = line.split("\\s+")[4];	// '+' means 'any' and \\s is equal to [ \\t\\n\\x0B\\f\\r]
-                            i++;
-                            String signal_strength = epfl.get(i).split("\\s+")[3];
-                            signal_strength = signal_strength.substring(0, signal_strength.length() - 1);	// omits '%'
-                            bssid_strength.put(bssid, signal_strength);
-                        }
-                    }
-                    tryagain = false;
+                    list.add(line);
                 }
             }
+            if (epfl == null) {
+                continue;
+            } else {
+                epfl.addAll(publicepfl);
+                for (int i = 0; i != epfl.size(); i++) {
+                    String line = epfl.get(i);
+                    if (line.contains("BSSID")) {
+                        String bssid = line.split("\\s+")[4];	// '+' means 'any' and \\s is equal to [ \\t\\n\\x0B\\f\\r]
+                        i++;
+                        String signal_strength = epfl.get(i).split("\\s+")[3];
+                        signal_strength = signal_strength.substring(0, signal_strength.length() - 1);	// omits '%'
+                        bssid_strength.put(bssid, signal_strength);
+                    }
+                }
+                tryagain = false;
+            }
         }
+        if(tryagain)
+            throw new Issue("Failed to find epfl WiFi network.");
         return bssid_strength;
     }
     /**
      * 
      * @param command
-     * @return null if command has non zero exit code, otherwise it returns the lines of stdout
-     * @throws IOException
-     * @throws InterruptedException
+     * @return non empty list of lines of output
      */
     private List<String> exec(String command) {
         List<String> lines = new ArrayList<String>();
@@ -161,19 +156,38 @@ public class Locator {
             pr = rt.exec(command);
             BufferedReader input = new BufferedReader(new InputStreamReader(pr.getInputStream()));
             String line = null;
-            while ((line = input.readLine()) != null) {
+            while ((line = input.readLine()) != null)
                 lines.add(line);
-            }
-            if (pr.waitFor() != 0) {
-                lines = null;
-            }
+            if (pr.waitFor() != 0)
+                throw new Issue("Command: "+command+" has non zero exit code");
+            if (lines.isEmpty())
+                throw new Issue("Command: "+command+" has no output");
+        } catch(SecurityException e){
+            throw new Issue("You do not have the permission to execute command: "+command);
         } catch (IOException e) {
-            System.out.println("command: " + command);
-            e.printStackTrace();
+            throw new Issue("IO error while executing command: "+command);
         } catch (InterruptedException e) {
-            System.out.println("command: " + command);
-            e.printStackTrace();
+            throw new Issue("Interrupted command: "+command);
         }
         return lines;
+    }
+    /**
+     * Instead of polluting the java code with methods that throw exceptions,
+     * a class can throw runtime exceptions as an inner class
+     * Writing description of erroneous cases can describe indirectly the
+     * functionality of the code in normal execution
+     */
+    public class Issue extends RuntimeException{
+        private String mistake;
+        public Issue(String say_what_happened){
+            super(say_what_happened);
+            String precondition = "Please check that your wireless device "+
+                    "is enabled and that you are at the "+
+                    "Rolex Learning Center.\n";
+            mistake = precondition + say_what_happened;
+        }
+        public String get(){
+            return mistake;
+        }
     }
 }

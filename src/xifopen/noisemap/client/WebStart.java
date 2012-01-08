@@ -34,10 +34,12 @@ public class WebStart extends JPanel
                 @Override
                 public String run() {	// all java code is client-side, so there is no obvious security issue
                     String x;
-                    double db = getNoise(Task.this);    // object of outer class
-                    x = db + " dB\n";
-                    if(db==1)
-                        x = "Error: Please check if your microphone is mute or if you have plugged in your headphones.";
+                    try{
+                        x = getNoise(Task.this) + " dB\n";    // object of outer class
+                    }
+                    catch(RuntimeException e){
+                        x = e.getMessage();
+                    }
                     return x;
                 }
                 public double getNoise(WebStart.Task t){
@@ -46,7 +48,7 @@ public class WebStart extends JPanel
                     //"00:24:97:f2:9e:81", new RouterArea("ap-lc-0-j19",49.78766041167251,1.222175058317221,1)
                     dB = new VUmeter().getDB(t);
                     String bssid = new Locator().routerWithHighestSignal(t);
-                    SendData.send("http://craftsrv5.epfl.ch/projects/noisemap/help.php","bssid="+bssid+"&noise="+dB);
+                    new SendData().send("http://craftsrv5.epfl.ch/projects/noisemap/help.php","bssid="+bssid+"&noise="+dB);
                     t.progressed(100);	
                     return dB;
                 }
@@ -72,7 +74,7 @@ public class WebStart extends JPanel
     }
     public WebStart() {
         super(new BorderLayout());
-        startButton = new JButton("Start!");
+        startButton = new JButton("Start");
         startButton.setActionCommand("start");
         startButton.addActionListener(this);
         progressBar = new JProgressBar(0, 100);
