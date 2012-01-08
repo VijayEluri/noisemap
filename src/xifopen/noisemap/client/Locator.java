@@ -1,6 +1,8 @@
 package xifopen.noisemap.client;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -40,15 +42,73 @@ public class Locator {
         }
         return nbssid;
     }
-
     private Map<String, String> detect() {
-        // TODO: currently parses only Windows 7 output
+        Map<String, String> result = null;
+        String os = System.getProperty("os.name").toLowerCase();
+        boolean isWindows = os.indexOf("win") >= 0;
+        boolean isMac = os.indexOf("mac") >= 0;
+        if (isWindows)
+            result = detectOnWindows();
+        else if(isMac)
+            result = detectOnOSX();
+        else
+            throw new UnsupportedOperationException(os);
+        return result;
+    }
+    /**
+     * Serves as a cross-platform wrapper around getting the list of detected BSSIDs along with their signal strength
+     * @return 
+     */
+    private Map<String, String> detectOnOSX() {
+        // TODO: check it on several versions of OSX
         Map<String, String> bssid_strength = new HashMap<String, String>();
 
+        boolean tryagain = true;
         List<String> r = null;
-        while (true) {				// workaround as sometimes the epfl SSID is not detected
-            r = getBSSID();
-            if (!r.isEmpty()) {
+        for(int tried=0; tryagain && tried<3; tried++){	// workaround as sometimes the epfl SSID is not detected
+            String cmd = "";
+            cmd += "/System/Library/PrivateFrameworks/Apple80211.framework";
+            cmd += "/Versions/Current/Resources/";
+            cmd += "airport -I or -s";
+            r = exec(cmd);
+            /* for simulation
+            FileReader fileReader;
+            try {
+                fileReader = new FileReader("output.txt");
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                String lin = null;
+                while ((lin = bufferedReader.readLine()) != null) {
+                    r.add(lin.trim());
+                }
+                bufferedReader.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } */           
+            if (!r.isEmpty())
+                for (int i = 1; i != r.size(); i++) {
+                    String[] words = r.get(i).split("\\s+");
+                    if(words.length>=3){
+                        String SSID = words[0];
+                        String BSSID = words[1];
+                        String RSSI = words[2];
+                        if (SSID.equals("public-epfl") || SSID.equals("epfl")){  // we avoid other possible networks that contain "epfl"
+                            bssid_strength.put(BSSID, RSSI);
+                            tryagain = false;
+                        }
+                    }
+                }
+        }
+        return bssid_strength;
+    }
+    private Map<String, String> detectOnWindows() {
+        // TODO: currently parses only Windows 7 output, check also windows Vista and XP
+        Map<String, String> bssid_strength = new HashMap<String, String>();
+
+        boolean tryagain = true;
+        List<String> r = null;
+        for(int tried=0; tryagain && tried<3; tried++){	// workaround as sometimes the epfl SSID is not detected
+            r = exec("cmd /c netsh wlan show networks mode=bssid");  // OR:netsh wlan show int | findstr "BSSID"
+            if (!r.isEmpty()) {     // cmd is necessary for pipes
                 List<String> list = new ArrayList<String>();
                 List<String> epfl = null;
                 List<String> publicepfl = null;
@@ -80,35 +140,12 @@ public class Locator {
                             bssid_strength.put(bssid, signal_strength);
                         }
                     }
-                    break;
+                    tryagain = false;
                 }
             }
         }
         return bssid_strength;
     }
-
-    /**
-     * Serves as a cross-platform wrapper around getting the list of detected BSSIDs along with their signal strength
-     * @return
-     */
-    private List<String> getBSSID() {
-        List<String> result = null;
-        String os = System.getProperty("os.name").toLowerCase();
-        boolean isWindows = os.indexOf("win") >= 0;
-        boolean isMac = os.indexOf("mac") >= 0;
-        if (isWindows) {	// check on windows 7, then on vista and xp			// cmd is necessary for pipes
-            result = exec("cmd /c netsh wlan show networks mode=bssid"); // OR:netsh wlan show int | findstr "BSSID"
-        }/*
-        else if(isMac){
-        // /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I or -s
-        }
-        else{
-        throw new Exception("Unsupported Operating System:"+os);
-        }
-         */
-        return result;
-    }
-
     /**
      * 
      * @param command
