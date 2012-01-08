@@ -1,7 +1,5 @@
 This Java application measures the noise intensity of your microphone and the BSSID of the nearest router (in terms of signal strength).
 
-The code is published so that a user of [this](http://craftsrv5.epfl.ch/projects/noisemap/) site can read the code that is executed on his machine.
-
 Production mode:
 Compile the code with Netbeans and use the ant script to package the code and compare its checksum with the checksum of the uploaded jar
 
