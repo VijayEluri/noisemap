@@ -9,6 +9,7 @@ import java.util.Calendar;
  * Alternatives to Jsyn that didn't work: JavaSound(random bug), ASIO, JMF, Jass, jRtAudio, FMJ
  * Jsyn recommended at http://stackoverflow.com/questions/4403804/sound-related-libraries
  * and at book: Physical computing: sensing and controlling the physical world with computers
+ * TODO: check why it sometimes gives 0.0 dB
  * @author nickmeet
  */
 public class VUmeter {
@@ -86,7 +87,10 @@ public class VUmeter {
             this.m_n = 0.0;
             return rounded.doubleValue();
         }
-    }   
+    } 
+    public static void main(String[] args){
+		System.out.println(Calendar.getInstance().getTimeInMillis());
+	}
     /**
      * Instead of polluting the java code with methods that throw exceptions,
      * a class can throw runtime exceptions as an inner class
