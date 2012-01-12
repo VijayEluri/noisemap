@@ -4,5 +4,11 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="lib" path="assets/osmdroid-android-3.0.6.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Documents and Settings/nikos/My Documents/github/noisemap.git/android/assets/osmdroid-android-docs-3.0.6.zip!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="assets/slf4j-android-1.5.8.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
