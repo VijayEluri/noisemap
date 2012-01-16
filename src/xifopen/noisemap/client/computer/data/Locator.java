@@ -1,4 +1,4 @@
-package xifopen.noisemap.client;
+package xifopen.noisemap.client.computer.data;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import xifopen.noisemap.client.computer.UI.LocatorAndNoiseMeterThread;
 
 public class Locator {
 
-    public String routerWithHighestSignal(WebStart.Task t) {
+    public String routerWithHighestSignal(LocatorAndNoiseMeterThread t) {
         String nbssid = null;	// Or:We could make training data to deal with walls and reflections
         try {
             List<Map<String, String>> measurements = new ArrayList<Map<String, String>>();

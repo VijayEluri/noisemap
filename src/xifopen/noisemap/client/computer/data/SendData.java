@@ -1,4 +1,4 @@
-package xifopen.noisemap.client;
+package xifopen.noisemap.client.computer.data;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.net.URL;
  */
 public class SendData {
     public void test(){
-        new SendData().send("http://craftsrv5.epfl.ch/projects/noisemap/help.php",
+        new SendData().send(LocatorAndNoiseMeterImpl.url+"/help.php",
                 "x=100&y=100&noise=80"); // To check the server side part (the output) use http://hurl.it
     }
     /**

@@ -1,4 +1,4 @@
-package xifopen.noisemap.client;
+package xifopen.noisemap.client.computer.UI;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.beans.*;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import xifopen.noisemap.client.computer.data.LocatorAndNoiseMeter;
+import xifopen.noisemap.client.computer.data.LocatorAndNoiseMeterImpl;
 
 public class WebStart extends JPanel
                               implements ActionListener, 
@@ -14,68 +16,12 @@ public class WebStart extends JPanel
     private JProgressBar progressBar;
     private JButton startButton;
     private JTextArea taskOutput;
-    private Task task;
+    private LocatorAndNoiseMeterThread task;
 
-    public class Task extends SwingWorker<Void, Void> {
-        private int percent = 0;
-        public void progressed(int percent){
-            this.percent += percent;
-            if(this.percent>=100)
-                this.percent = 100;
-            setProgress(this.percent);
-        }
-        private String result = "";
-        /*
-         * Main task. Executed in background thread.
-         */
-        @Override
-        public Void doInBackground(){
-            result = AccessController.doPrivileged(new PrivilegedAction<String>() { // useless but kept for convenience
-                @Override
-                public String run() {	// all java code is client-side, so there is no obvious security issue
-                    String x;
-                    try{
-                        x = getNoise(Task.this) + " dB\n";    // object of outer class
-                    }
-                    catch(RuntimeException e){
-                        x = e.getMessage();
-                    }
-                    return x;
-                }
-                public double getNoise(WebStart.Task t){
-                    double dB = -1;
-                    t.progressed(1);
-                    //"00:24:97:f2:9e:81", new RouterArea("ap-lc-0-j19",49.78766041167251,1.222175058317221,1)
-                    dB = new VUmeter().getDB(t);
-                    String bssid = new Locator().routerWithHighestSignal(t);
-                    new SendData().send("http://craftsrv5.epfl.ch/projects/noisemap/help.php","bssid="+bssid+"&noise="+dB);
-                    t.progressed(100);	
-                    return dB;
-                }
-            });
-            return null;
-        }
-        public Void doIt(){
-            //getNoiseAndPosition(this);
-            this.setProgress(0);
-            return null;
-        }
-
-        /*
-         * Executed in event dispatch thread
-         */
-        @Override
-        public void done() {
-            Toolkit.getDefaultToolkit().beep();
-            startButton.setEnabled(true);
-            taskOutput.append(result);
-        }
-        
-    }
     public WebStart() {
         super(new BorderLayout());
-        startButton = new JButton("Start");
-        startButton.setActionCommand("start");
+        startButton = new JButton("Stop");
+        startButton.setActionCommand("stop");
         startButton.addActionListener(this);
         progressBar = new JProgressBar(0, 100);
         progressBar.setValue(0);
@@ -91,6 +37,9 @@ public class WebStart extends JPanel
         add(panel, BorderLayout.PAGE_START);
         add(new JScrollPane(taskOutput), BorderLayout.CENTER);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        
+        task = new LocatorAndNoiseMeterThread(taskOutput);
+        task.execute();
     }
     /**
      * Invoked when the user presses the start button.
@@ -102,9 +51,7 @@ public class WebStart extends JPanel
         startButton.setEnabled(false);
         //Instances of javax.swing.SwingWorker are not reusuable, so
         //we create new instances as needed.
-        task = new Task();
-        task.addPropertyChangeListener(this);
-        task.execute();
+        task.interrupt();
     }
     /**
      * Invoked when task's progress property changes.

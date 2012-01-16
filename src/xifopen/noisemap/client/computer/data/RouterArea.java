@@ -1,4 +1,4 @@
-package xifopen.noisemap.client;
+package xifopen.noisemap.client.computer.data;
 
 
 public class RouterArea {
