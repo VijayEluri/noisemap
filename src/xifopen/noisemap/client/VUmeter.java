@@ -62,10 +62,11 @@ public class VUmeter {
         public double getDBThread(){       // The typical VU scale is from −20 to +3
             Synth.startEngine(Synth.FLAG_ENABLE_INPUT); // flag necessary for lineIn
             PeakFollower pd = new PeakFollower();
+            PeakFollower follower = new PeakFollower();
             pd.start();
             LineIn lineIn = new LineIn();
             lineIn.start();
-            lineIn.output.connect(pd.input);        // connects the signal you want to analyze to the right detector
+            lineIn.output.connect(0, pd.input, 0);  // connects the signal you want to analyze to the right detector
             try {   // we find the peak within 100msec and keep the avg over 2sec
                 for (int i = 0; i < 20; i++) {      // polls the detector 10 times a second for 2 seconds
                     double peak = pd.output.get();
