@@ -1,10 +1,6 @@
 package xifopen.noisemap.client.computer.UI;
 
 import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 import xifopen.noisemap.client.computer.data.LocatorAndNoiseMeterImpl;
