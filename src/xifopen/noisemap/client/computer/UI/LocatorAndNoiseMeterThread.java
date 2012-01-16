@@ -2,6 +2,8 @@ package xifopen.noisemap.client.computer.UI;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
@@ -15,13 +17,13 @@ public class LocatorAndNoiseMeterThread extends SwingWorker<Void, Void> {
     private int percent = 0;
     private JTextArea taskOutput;
     private String result = "";
-    private boolean interrupted = false;
+    private boolean isPaused = false;
 
     public LocatorAndNoiseMeterThread(JTextArea taskOutput){
         this.taskOutput = taskOutput;
     }
-    public void interrupt(){
-        interrupted = true;
+    public void pause(){
+        isPaused = true;
     }
     public void progressed(int percent){
         this.percent += percent;
@@ -35,11 +37,18 @@ public class LocatorAndNoiseMeterThread extends SwingWorker<Void, Void> {
     @Override
     public Void doInBackground(){
         final LocatorAndNoiseMeterImpl meter = new LocatorAndNoiseMeterImpl(this); 
-        while(!interrupted){
-            result = AccessController.doPrivileged(new PrivilegedMeter(meter));
-            taskOutput.append(result);
+        while(true){
+            if(!isPaused){
+                result = AccessController.doPrivileged(new PrivilegedMeter(meter));
+                taskOutput.append(result);
+            }
+            wait1sec();
         }        
-        return null;
+    }
+    private void wait1sec(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {}
     }
     public Void doIt(){
         this.setProgress(0);
@@ -51,5 +60,9 @@ public class LocatorAndNoiseMeterThread extends SwingWorker<Void, Void> {
     @Override
     public void done() {
         //taskOutput.append(result);
+    }
+
+    void resume() {
+        isPaused = false;
     }
 }
