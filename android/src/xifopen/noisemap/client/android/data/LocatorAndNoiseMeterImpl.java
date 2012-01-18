@@ -31,6 +31,8 @@ import android.util.Log;
 
 public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	private static final String TAG = "LocatorAndNoiseMeterImpl";
+	private static final boolean wardriving = true;
+	private WifiManager wifi;
 	private int tried = 0;
 	/*
 	 * located also at Web Start configuration of NetBeans
@@ -38,17 +40,21 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	public static String url = "http://craftsrv5.epfl.ch/projects/noisemap";
 	private String bssid;
 	public LocatorAndNoiseMeterImpl(WifiManager wifi){
-		bssid = locator(wifi);         
+		this.wifi = wifi;
+		if(!wardriving)
+			bssid = locator(this.wifi);         
     }
 	public void send(){
 		double db = 0;
+		if(wardriving)
+			bssid = locator(this.wifi);  
 		for(int i=0; i<5; i++){
 			db += noiselevel();
 			wait1sec();
 		}
 		db = db/5;
 		send(db); 
-		Log.v(TAG, "Sent successfully to server the following data: "+db+" db\n");
+		Log.v(TAG, "Sent successfully to server the following data: "+db+" db in the AOI near the router "+bssid+"\n");
 	}
 	private void wait1sec(){
 		try {
@@ -58,6 +64,21 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 		}
 	}
  	private String locator(WifiManager wifi){
+ 		/**
+ 		 * try 10 times to reconnect so that we are more confident
+ 		 * that the BSSID is the nearest while you are moving
+ 		 */
+ 		for(int i=0; i<10; i++){
+ 			if(wifi.reconnect())
+ 				break;
+ 			else
+ 				Log.v(TAG, "Failed to reconnect for "+i+"th time\n");
+ 			wait1sec();
+ 		}
+ 		if(!wifi.reconnect())
+ 			throw new Issue("Failed to recoonect to WiFi");
+ 		return wifi.getConnectionInfo().getBSSID();
+ 		/*
 		String strongestBSSID = "";
 		//WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         if(wifi==null)
@@ -72,6 +93,7 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
         if(maxdb==-200)
         	throw new Issue("This application works only inside the Rolex Learning Center");
         return strongestBSSID;
+        */
 	}
 	private double noiselevel(){
         double db = -200;
