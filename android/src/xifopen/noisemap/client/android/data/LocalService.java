@@ -1,6 +1,5 @@
 package xifopen.noisemap.client.android.data;
 
-import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -14,7 +13,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
-import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -32,17 +30,7 @@ public class LocalService extends Service {
         Log.i("LocalService", "Received start id " + startId + ": " + intent);
         return START_NOT_STICKY;	// in case of stopping, it won't be scheduled for a restart
     }
-	public class LocalBinder<S> extends Binder {
-	    private String TAG = "LocalBinder";
-	    private  WeakReference<S> mService;
-	    public LocalBinder(S service){
-	        mService = new WeakReference<S>(service);
-	    }
-	    public S getService() {
-	        return mService.get();
-	    }
-	}
-    @Override
+	@Override
     public IBinder onBind(Intent intent) {
     	return new LocalBinder<LocalService>(this);
     }    
@@ -61,7 +49,8 @@ public class LocalService extends Service {
 					try{
 						meter.send();
 					} catch(Exception e){
-						stopSelf();
+						timer.cancel();		// halts all instances of TimerTask
+						stopSelf();			// stops service
 					}
 				}
 			}, 0, 5000);	// 1min
