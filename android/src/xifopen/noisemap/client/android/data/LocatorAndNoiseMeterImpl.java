@@ -164,10 +164,14 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	    	tried++;
 	    	Log.v(TAG, "Failed to send data, will try sending after 2 seconds for "+tried+" time\n");
 	    	wait1sec();
-	    	if(tried<30)
+	    	if(tried<30){
 	    		send(db);
-	    	else
-	    		throw new Issue("Tried "+" times to send data with no success\n"+e.getMessage());
+	    		tried = 0;	// if no exception then it resets 'tried'
+	    	}
+	    	else{
+	    		tried = 0;
+	    		throw new Issue("Tried "+tried+" times to send data with no success\n"+e.getMessage());
+	    	}
 	    }
 	}
     /**

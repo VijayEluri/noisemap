@@ -30,9 +30,7 @@ public class LocalService extends Service {
 	@Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("LocalService", "Received start id " + startId + ": " + intent);
-        // We want this service to continue running until it is explicitly
-        // stopped, so return sticky.
-        return START_STICKY;
+        return START_NOT_STICKY;	// in case of stopping, it won't be scheduled for a restart
     }
 	public class LocalBinder<S> extends Binder {
 	    private String TAG = "LocalBinder";
@@ -60,7 +58,11 @@ public class LocalService extends Service {
     	timer.scheduleAtFixedRate(
 			new TimerTask() {
 				public void run() {
-					meter.send();
+					try{
+						meter.send();
+					} catch(Exception e){
+						stopSelf();
+					}
 				}
 			}, 0, 5000);	// 1min
 		Log.i(getClass().getSimpleName(), "Timer started!!!");
