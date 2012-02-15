@@ -1,9 +1,14 @@
 package xifopen.noisemap.client.android.UI;
 
 import xifopen.noisemap.client.android.R;
+import xifopen.noisemap.client.android.data.LocalService;
 import xifopen.noisemap.client.android.data.LocatorAndNoiseMeterImpl;
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -13,6 +18,10 @@ import android.widget.RelativeLayout;
 
 public class NoisemapLayout extends RelativeLayout {
 	private Activity context;
+	private Button clickBtn;
+	private boolean isStart = false;
+	private static final int MENUITEM = Menu.FIRST;
+	
 	public NoisemapLayout(Activity context) {
 		super(context);
 		this.context = context;
@@ -29,6 +38,23 @@ public class NoisemapLayout extends RelativeLayout {
 	    this.addView(btn1); 
 	    return this;
 	}
+	public Menu alter(Menu menu) {
+		menu.clear();
+		MenuItem item = menu.add(0, MENUITEM, 0, isStart?"Start":"Stop");
+		item.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem arg0) {
+				if(isStart)
+					context.startService(new Intent(context, LocalService.class));
+				else
+					context.stopService(new Intent(context, LocalService.class));
+				isStart = !isStart;
+				return true;
+			}
+	    });
+		return menu;
+	}
+	
 	public NoisemapLayout addImage(){
 		WebView webView = new WebView(context);
 		/*

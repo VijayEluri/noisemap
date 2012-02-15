@@ -39,18 +39,35 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	 */
 	public static String url = "http://craftsrv5.epfl.ch/projects/noisemap";
 	private String bssid;
+	private int rate = -1;		 	// device specific
+	private int minBufferSize = -10;
 	public LocatorAndNoiseMeterImpl(WifiManager wifi){
 		this.wifi = wifi;
 		if(!wardriving)
-			bssid = locator(this.wifi);         
+			bssid = locator(this.wifi); 
+		
+        int[] sampleRates = new int[] { 8000, 11025, 22050, 44100 };
+        for (int aRate : sampleRates) {
+        	try{
+        		minBufferSize = AudioRecord.getMinBufferSize(aRate,
+        				AudioFormat.CHANNEL_CONFIGURATION_MONO,
+        				AudioFormat.ENCODING_PCM_16BIT);
+        		rate = aRate;
+        		break;				// if there is no exception then it uses this sample rate
+        	} catch(Exception e){} 	// continue
+        }
     }
 	public void send(){
 		double db = 0;
 		if(wardriving)
 			bssid = locator(this.wifi);  
 		for(int i=0; i<5; i++){
-			db += noiselevel();
-			wait1sec();
+			try{					// if the user is speaking on the phone, then it tries after 5 minutes
+				db += noiselevel();
+				wait1sec();
+			} catch(Exception e){
+				wait5min();
+			}
 		}
 		db = db/5;
 		send(db); 
@@ -59,6 +76,13 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	private void wait1sec(){
 		try {
 			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			throw new Issue("Interrupted while waiting for a sec");
+		}
+	}
+	private void wait5min(){
+		try {
+			Thread.sleep(300000);
 		} catch (InterruptedException e1) {
 			throw new Issue("Interrupted while waiting for a sec");
 		}
@@ -72,7 +96,7 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
  			if(wifi.reconnect())
  				break;
  			else
- 				Log.v(TAG, "Failed to reconnect for "+i+"th time\n");
+ 				Log.w(TAG, "Failed to reconnect for "+i+"th time\n");
  			wait1sec();
  		}
  		if(!wifi.reconnect())
@@ -98,18 +122,6 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	private double noiselevel(){
         double db = -200;
         try{
-	        int minBufferSize = -10;
-	        int rate = -1;			 // device specific
-	        int[] sampleRates = new int[] { 8000, 11025, 22050, 44100 };
-	        for (int aRate : sampleRates) {
-	        	try{
-	        		minBufferSize = AudioRecord.getMinBufferSize(aRate,
-	        				AudioFormat.CHANNEL_CONFIGURATION_MONO,
-	        				AudioFormat.ENCODING_PCM_16BIT);
-	        		rate = aRate;
-	        		break;
-	        	} catch(Exception e){} // continue
-	        }
 	        if(rate==-1)
 	        	throw new Issue("Failed to get minimum buffer size of microphone");
 	        if(minBufferSize>0){
@@ -144,13 +156,19 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	private void send(double db){
 		int status = 0;
 	    HttpClient httpclient = new DefaultHttpClient();
-	    HttpPost httppost = new HttpPost(LocatorAndNoiseMeterImpl.url+"/set.php");
+	    String url = LocatorAndNoiseMeterImpl.url+"/set.php";
+	    HttpPost httppost = new HttpPost(url);
 	    try {
 	    	System.setProperty("http.keepAlive", "false");
-	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+	    	url += "?";
+	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 	        nameValuePairs.add(new BasicNameValuePair("bssid", this.bssid));
+	        url += "bssid="+this.bssid+"&";
 	        nameValuePairs.add(new BasicNameValuePair("noise", ""+db));
-	        nameValuePairs.add(new BasicNameValuePair("timestamp", ""+Calendar.getInstance().getTimeInMillis()));
+	        url += "noise="+db+"&";
+	        String time = ""+Calendar.getInstance().getTimeInMillis();
+	        nameValuePairs.add(new BasicNameValuePair("timestamp", time));
+	        url += "timestamp="+time;
 	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 	        HttpResponse response = httpclient.execute(httppost);
 	        status = response.getStatusLine().getStatusCode();
@@ -158,11 +176,12 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	        	status = 0;
 	        else
 	            throw new Issue("Status: "+status);
+	        Log.d(TAG, url);		// in case of success, keep the url for debugging
 	    } catch (ClientProtocolException e) {
 	    	throw new Issue("Malformed URL: "+e.getMessage());
 	    } catch (IOException e) {
 	    	tried++;
-	    	Log.v(TAG, "Failed to send data, will try sending after 2 seconds for "+tried+" time\n");
+	    	Log.w(TAG, "Failed to send data, will try sending after 2 seconds for "+tried+" time\n");
 	    	wait1sec();
 	    	if(tried<30){
 	    		send(db);

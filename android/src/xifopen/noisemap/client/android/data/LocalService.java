@@ -12,6 +12,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.util.Log;
@@ -54,11 +55,11 @@ public class LocalService extends Service {
 					}
 				}
 			}, 0, 5000);	// 1min
-		Log.i(getClass().getSimpleName(), "Timer started!!!");
+		Log.i(getClass().getSimpleName(), "Service Noisemap started!!!");
     }
     private void _shutdownService() {
     	if (timer != null)
     		timer.cancel();
-    	Log.i(getClass().getSimpleName(), "Timer stopped!!!");
+    	Log.e(getClass().getSimpleName(), "Service Noisemap stopped!!!");
     }
 }
