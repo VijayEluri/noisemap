@@ -40,7 +40,7 @@ public class NoisemapLayout extends RelativeLayout {
 	}
 	public Menu alter(Menu menu) {
 		menu.clear();
-		MenuItem item = menu.add(0, MENUITEM, 0, isStart?"Start":"Stop");
+		MenuItem item = menu.add(0, MENUITEM, 0, isStart?"Start measuring noise":"Stop measuring noise");
 		item.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem arg0) {
@@ -66,7 +66,7 @@ public class NoisemapLayout extends RelativeLayout {
 		webView.getSettings().setBuiltInZoomControls(true);
 		webView.setInitialScale(50);
 		webView.setWebChromeClient(new MyWebChromeClient());
-		webView.loadUrl(LocatorAndNoiseMeterImpl.url);
+		webView.loadUrl(LocatorAndNoiseMeterImpl.url+"?isMobile=true");
 	    /*
 		ImageView i = new ImageView(context);
         i.setImageResource(R.drawable.floorplan);	// currently the image is also in all res/drawable* folders

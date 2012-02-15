@@ -6,6 +6,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.TimerTask;
 
+import xifopen.noisemap.client.android.R;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,7 +22,9 @@ import android.widget.Toast;
 
 public class LocalService extends Service {
 	private LocatorAndNoiseMeter meter;
+	private static final int NOTIFICATION_ID = 1;
 	private Timer timer = new Timer();
+	
     @Override
     public void onCreate() {
     	super.onCreate();
@@ -40,6 +44,22 @@ public class LocalService extends Service {
     	super.onDestroy();
     	_shutdownService();
 	}
+    public void notify(String title, String text){
+    	String ns = Context.NOTIFICATION_SERVICE;
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
+		int icon = R.drawable.notification;
+		CharSequence tickerText = title;
+		long when = System.currentTimeMillis();
+		Notification notification = new Notification(icon, tickerText, when);
+		
+		Context context = getApplicationContext();
+		CharSequence contentTitle = tickerText;
+		CharSequence contentText = text;
+		Intent notificationIntent = new Intent(this, getClass());
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+		mNotificationManager.notify(NOTIFICATION_ID, notification);
+    }
     private void _startService() {
     	final WifiManager wifi = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
     	meter = new LocatorAndNoiseMeterImpl(wifi);
@@ -50,8 +70,9 @@ public class LocalService extends Service {
 					try{
 						meter.send();
 					} catch(Exception e){
-						timer.cancel();		// halts all instances of TimerTask
-						stopSelf();			// stops service
+						LocalService.this.notify("Service NoiseMap is down", "To start it again, open the application Noisemap");
+						timer.cancel();							// halts all instances of TimerTask
+						LocalService.this.stopSelf();			// stops service
 					}
 				}
 			}, 0, 5000);	// 1min
