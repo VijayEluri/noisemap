@@ -62,8 +62,8 @@ public class LocalService extends Service {
     }
     private void _startService() {
     	final WifiManager wifi = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-    	meter = new LocatorAndNoiseMeterImpl(wifi);
-    	//meter = new LocatorAndNoiseMeter(){ public void send(){} }; // mock object to allow emulation of the rest of the code
+    	//meter = new LocatorAndNoiseMeterImpl(wifi);
+    	meter = new LocatorAndNoiseMeter(){ public void send(){} }; // mock object to allow emulation of the rest of the code
     	timer.scheduleAtFixedRate(
 			new TimerTask() {
 				public void run() {

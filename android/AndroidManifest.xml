@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
         <service android:name=".data.LocalService"></service>
+        <activity android:name=".UI.ViewActivity" android:label="@string/app_name"></activity>
     </application>
 
 </manifest>

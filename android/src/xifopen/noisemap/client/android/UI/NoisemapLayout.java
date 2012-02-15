@@ -5,6 +5,7 @@ import xifopen.noisemap.client.android.data.LocalService;
 import xifopen.noisemap.client.android.data.LocatorAndNoiseMeterImpl;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
@@ -26,15 +28,20 @@ public class NoisemapLayout extends RelativeLayout {
 		super(context);
 		this.context = context;
 	}
-	public NoisemapLayout addExitButton(){
+	public NoisemapLayout addViewButton(){
 		Button btn1 = new Button(context);
+		btn1.setText("View Noisemap");
 	    btn1.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View arg0) {
-				context.finish();
-	            System.exit(0);
+			public void onClick(View view) {
+				Intent intent = new Intent(context, ViewActivity.class);
+				context.startActivity(intent);
 			}
 	    });
+	    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+	    params.addRule(RelativeLayout.CENTER_HORIZONTAL, -1);
+	    params.addRule(RelativeLayout.CENTER_VERTICAL, -1);
+	    btn1.setLayoutParams(params);
 	    this.addView(btn1); 
 	    return this;
 	}
@@ -65,7 +72,7 @@ public class NoisemapLayout extends RelativeLayout {
 		webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 		webView.getSettings().setBuiltInZoomControls(true);
 		webView.setInitialScale(50);
-		webView.setWebChromeClient(new MyWebChromeClient());
+		webView.setWebViewClient(new NoURLwebview());
 		webView.loadUrl(LocatorAndNoiseMeterImpl.url+"?isMobile=true");
 	    /*
 		ImageView i = new ImageView(context);
@@ -80,14 +87,32 @@ public class NoisemapLayout extends RelativeLayout {
      * Provides a hook for calling "alert" from javascript. Useful for
      * debugging your javascript.
      */
-    final class MyWebChromeClient extends WebChromeClient {
+    final class NoURLwebview extends WebViewClient  {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
+        /*
         @Override
         public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
             Log.d(getClass().getSimpleName(), message);
             result.confirm();
             return true;
-        }
+        }*/
     }
+    public NoisemapLayout addExitButton(){
+		Button btn1 = new Button(context);
+	    btn1.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				context.finish();
+	            System.exit(0);
+			}
+	    });
+	    this.addView(btn1); 
+	    return this;
+	}
 	/**
 	public MapView addWorldMap(){
 		CloudmadeUtil.retrieveCloudmadeKey(context.getApplicationContext());
