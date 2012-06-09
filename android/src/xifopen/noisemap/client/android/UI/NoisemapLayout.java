@@ -34,7 +34,7 @@ public class NoisemapLayout extends RelativeLayout {
 	    btn1.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent intent = new Intent(context, ViewActivity.class);
+				Intent intent = new Intent(context, NoisemapActivity.class);
 				context.startActivity(intent);
 			}
 	    });
