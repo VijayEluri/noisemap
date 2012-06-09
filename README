@@ -1,8 +1,3 @@
 This Java application measures the noise intensity of your microphone and the BSSID of the nearest router (in terms of signal strength).
 
-Production mode:
-Compile the code with Netbeans and use the ant script to package the code and compare its checksum with the checksum of the uploaded jar
-
-Development mode:
-Currently there is no documentation for running the generated jar in your machine as it depends on the domain.
-
+The android folder had an eclipse project for the android client which requires google APIs of android 2.1 and an emulator with resolution 240X320.
