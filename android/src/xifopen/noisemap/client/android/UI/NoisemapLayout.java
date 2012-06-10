@@ -34,7 +34,7 @@ public class NoisemapLayout extends RelativeLayout {
 	    btn1.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent intent = new Intent(context, NoisemapActivity.class);
+				Intent intent = new Intent(context, ViewActivity.class);
 				context.startActivity(intent);
 			}
 	    });
@@ -51,15 +51,18 @@ public class NoisemapLayout extends RelativeLayout {
 		item.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 			@Override
 			public boolean onMenuItemClick(MenuItem arg0) {
-				if(isStart)
-					context.startService(new Intent(context, LocalService.class));
-				else
-					context.stopService(new Intent(context, LocalService.class));
-				isStart = !isStart;
+				switchButton();
 				return true;
 			}
 	    });
 		return menu;
+	}
+	public void switchButton(){
+		if(isStart)
+			context.startService(new Intent(context, LocalService.class));
+		else
+			context.stopService(new Intent(context, LocalService.class));
+		isStart = !isStart;
 	}
 	
 	public NoisemapLayout addImage(){
@@ -73,7 +76,7 @@ public class NoisemapLayout extends RelativeLayout {
 		webView.getSettings().setBuiltInZoomControls(true);
 		webView.setInitialScale(50);
 		webView.setWebViewClient(new NoURLwebview());
-		webView.loadUrl(LocatorAndNoiseMeterImpl.url+"?isMobile=true");
+		webView.loadUrl(LocatorAndNoiseMeterImpl.noisemap_server_url+"?isMobile=true");
 	    /*
 		ImageView i = new ImageView(context);
         i.setImageResource(R.drawable.floorplan);	// currently the image is also in all res/drawable* folders

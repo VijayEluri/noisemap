@@ -2,7 +2,10 @@ package xifopen.noisemap.client.android.UI;
 
 import xifopen.noisemap.client.android.data.LocalService;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
 
@@ -24,9 +27,21 @@ public class NoisemapActivity extends Activity {
         layout = new NoisemapLayout(this);
         if(android.os.Build.VERSION.SDK_INT>=11)
         	layout.addImage();
-        else
-        	layout.addViewButton();							// on Android 2.3.x (API level 10) or lower, the menu of the embedded...
-		this.setContentView(layout);						// ...browser hides the start/stop service button
+        else												// on Android 2.3.x (API level 10) or lower, the menu of the embedded...
+        	layout.addViewButton();							// ...browser hides the start/stop service button
+        // registers communication with the service
+        IntentFilter listening2intents = new IntentFilter(LocalService.Iintent2stop);
+        BroadcastReceiver ServiceReceiver = new BroadcastReceiver(){
+            @Override 
+            public void onReceive(Context arg0, Intent fromLocalService) {
+            	String status = fromLocalService.getExtras().getString("status"); 
+            	if(status.equals("down"))
+            		layout.switchButton();
+            }
+        };
+        registerReceiver(ServiceReceiver, listening2intents);
+        // renders layout
+		this.setContentView(layout);						
     }    
     @Override
 	public boolean onPrepareOptionsMenu(Menu menu) {

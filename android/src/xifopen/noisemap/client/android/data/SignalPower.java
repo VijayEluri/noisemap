@@ -102,16 +102,16 @@ public final class SignalPower {
             sqsum += v * v;
         }
 
-        // sqsum is the sum of all (signal+bias)², so
-        //     sqsum = sum(signal²) + samples * bias²
+        // sqsum is the sum of all (signal+bias)^2, so
+        //     sqsum = sum(signal²) + samples * bias^2
         // hence
-        //     sum(signal²) = sqsum - samples * bias²
+        //     sum(signal²) = sqsum - samples * bias^2
         // Bias is simply the average value, i.e.
         //     bias = sum / samples
-        // Since power = sum(signal²) / samples, we have
-        //     power = (sqsum - samples * sum² / samples²) / samples
+        // Since power = sum(signal^2) / samples, we have
+        //     power = (sqsum - samples * sum^2 / samples^2) / samples
         // so
-        //     power = (sqsum - sum² / samples) / samples
+        //     power = (sqsum - sum^2 / samples) / samples
         double power = (sqsum - sum * sum / samples) / samples;
 
         // Scale to the range 0 - 1.

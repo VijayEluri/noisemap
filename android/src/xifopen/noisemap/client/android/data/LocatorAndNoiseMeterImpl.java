@@ -34,10 +34,13 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	private static final boolean wardriving = true;
 	private WifiManager wifi;
 	private int tried = 0;
+	private String ip;
 	/*
 	 * located also at Web Start configuration of NetBeans
 	 */
-	public static String url = "http://craftsrv5.epfl.ch/projects/noisemap";
+	public static String noisemap_server_url = "http://craftsrv5.epfl.ch/projects/noisemap";
+	public static String payment_server_url = "http://128.178.254.243:8080/RestPaymentServer/webresources/paymentService";
+	//"http://128.178.13.166:8080/RestPaymentServer/webresources/paymentService";
 	private String bssid;
 	private int rate = -1;		 	// device specific
 	private int minBufferSize = -10;
@@ -69,8 +72,11 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 				wait5min();
 			}
 		}
-		db = db/5;
-		send(db); 
+		db = db/5;	// every 5 seconds it sends the avg of 5 measurements.
+		// Each measurement is done 1 second after the previous one.
+		Log.i(TAG, "Sendingnoise: "+db+"\n");
+		send2noisemapserver(db); 
+		send2paymentserver(db);
 		Log.v(TAG, "Sent successfully to server the following data: "+db+" db in the AOI near the router "+bssid+"\n");
 	}
 	private void wait1sec(){
@@ -88,6 +94,11 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 		}
 	}
  	private String locator(WifiManager wifi){
+ 		ip = wifi.getConnectionInfo().getMacAddress();	// probably not debuggable
+ 		if(ip.equals("38:E7:D8:1E:CA:1E"))		// for the demo
+ 			ip = "Auguste";
+ 		else if(ip.equals("54:04:A6:48:48:DA"))
+ 			ip = "Nikos";
  		/**
  		 * try 10 times to reconnect so that we are more confident
  		 * that the BSSID is the nearest while you are moving
@@ -153,10 +164,10 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
     /**
      * Sends HTTP POST with bssid, noise and timestamp in milliseconds
      */
-	private void send(double db){
+	private void send2noisemapserver(double db){
 		int status = 0;
 	    HttpClient httpclient = new DefaultHttpClient();
-	    String url = LocatorAndNoiseMeterImpl.url+"/set.php";
+	    String url = LocatorAndNoiseMeterImpl.noisemap_server_url+"/set.php";
 	    HttpPost httppost = new HttpPost(url);
 	    try {
 	    	System.setProperty("http.keepAlive", "false");
@@ -176,15 +187,57 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	        	status = 0;
 	        else
 	            throw new Issue("Status: "+status);
-	        Log.d(TAG, url);		// in case of success, keep the url for debugging
+	        Log.i(TAG, url);		// in case of success, keep the url for debugging
 	    } catch (ClientProtocolException e) {
 	    	throw new Issue("Malformed URL: "+e.getMessage());
 	    } catch (IOException e) {
 	    	tried++;
-	    	Log.w(TAG, "Failed to send data, will try sending after 2 seconds for "+tried+" time\n");
+	    	Log.w(TAG, "Failed to send data to noisemap, will try sending after 2 seconds for "+tried+" time\n");
 	    	wait1sec();
 	    	if(tried<30){
-	    		send(db);
+	    		send2noisemapserver(db);
+	    		tried = 0;	// if no exception then it resets 'tried'
+	    	}
+	    	else{
+	    		tried = 0;
+	    		throw new Issue("Tried "+tried+" times to send data with no success\n"+e.getMessage());
+	    	}
+	    }
+	}
+	/**
+     * Sends HTTP POST with bssid, noise and timestamp in milliseconds
+     */
+	private void send2paymentserver(double db){
+		int status = 0;
+	    HttpClient httpclient = new DefaultHttpClient();
+	    String url = LocatorAndNoiseMeterImpl.payment_server_url;
+	    HttpPost httppost = new HttpPost(url);
+	    try {
+	    	System.setProperty("http.keepAlive", "false");
+	    	url += "?";
+	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+	        nameValuePairs.add(new BasicNameValuePair("userID", ip));
+	        url += "id=123456&";
+	        nameValuePairs.add(new BasicNameValuePair("routerName", ""+this.bssid));
+	        url += "routerName="+this.bssid+"&";
+	        nameValuePairs.add(new BasicNameValuePair("soundLevel", ""+db));
+	        url += "soundLevel="+db;
+	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+	        HttpResponse response = httpclient.execute(httppost);
+	        status = response.getStatusLine().getStatusCode();
+	        if(status == HttpStatus.SC_OK)
+	        	status = 0;
+	        else
+	            throw new Issue("Status: "+status);
+	        Log.i(TAG, url);		// in case of success, keep the url for debugging
+	    } catch (ClientProtocolException e) {
+	    	throw new Issue("Malformed URL: "+e.getMessage());
+	    } catch (IOException e) {
+	    	tried++;
+	    	Log.w(TAG, "Failed to send data to payment server, will try sending after 2 seconds for "+tried+" time\n");
+	    	wait1sec();
+	    	if(tried<30){
+	    		send2paymentserver(db);
 	    		tried = 0;	// if no exception then it resets 'tried'
 	    	}
 	    	else{
@@ -200,12 +253,14 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
      * functionality of the code in normal execution
      */
     public class Issue extends RuntimeException{
+    	private static final String TAG = "LocatorAndNoiseMeterImpl.TAG";
 		private static final long serialVersionUID = 1L;
 		private String mistake;
         public Issue(String say_what_happened){
             super(say_what_happened);
             String precondition = "Please check your internet connection.\n";
             mistake = precondition + say_what_happened;
+            Log.e(TAG,mistake);
         }
         public String get(){
             return mistake;

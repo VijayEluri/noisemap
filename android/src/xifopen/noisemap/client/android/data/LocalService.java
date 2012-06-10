@@ -25,6 +25,7 @@ import android.widget.Toast;
 public class LocalService extends Service {
 	private LocatorAndNoiseMeter meter;
 	private static final int NOTIFICATION_ID = 1;
+	public static final String Iintent2stop = "I intent to stop";
 	private Timer timer = new Timer();
 	
     @Override
@@ -71,23 +72,28 @@ public class LocalService extends Service {
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
 		mNotificationManager.notify(NOTIFICATION_ID, notification);
+		// switching off the button requires communication between the service and the activities
+		Intent toActivity = new Intent(Iintent2stop); 
+		toActivity.putExtra("status", "down");
+        sendBroadcast(toActivity);
     }
     private void _startService() {
     	final WifiManager wifi = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-    	//meter = new LocatorAndNoiseMeterImpl(wifi);
-    	meter = new LocatorAndNoiseMeter(){ public void send(){} }; // mock object to allow emulation of the rest of the code
+    	meter = new LocatorAndNoiseMeterImpl(wifi);
+    	//meter = new LocatorAndNoiseMeter(){ public void send(){} }; // mock object for debugging to allow emulation of the rest of the code
     	timer.scheduleAtFixedRate(
 			new TimerTask() {
 				public void run() {
 					try{
 						meter.send();
 					} catch(Exception e){
+						Log.e(getClass().getSimpleName(), "Service NoiseMap is down:"+e.getMessage());
 						LocalService.this.notify("Service NoiseMap is down", "To start it again, open the application Noisemap");
 						timer.cancel();							// halts all instances of TimerTask
 						LocalService.this.stopSelf();			// stops service
 					}
 				}
-			}, 0, 5000);	// 1min
+			}, 0, 5000);	// for the demo, otherwise it should be 5 minutes
 		Log.i(getClass().getSimpleName(), "Service Noisemap started!!!");
     }
     private void _shutdownService() {
