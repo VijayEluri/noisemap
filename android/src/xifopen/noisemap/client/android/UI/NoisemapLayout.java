@@ -65,7 +65,7 @@ public class NoisemapLayout extends RelativeLayout {
 		isStart = !isStart;
 	}
 	
-	public NoisemapLayout addImage(){
+	public WebView addImage(){
 		WebView webView = new WebView(context);
 		/*
 		String page = "<html><body><center><img src=\"file:///android_asset/floorplan.png\"/></center></body></html>";
@@ -74,7 +74,8 @@ public class NoisemapLayout extends RelativeLayout {
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 		webView.getSettings().setBuiltInZoomControls(true);
-		webView.setInitialScale(50);
+		webView.getSettings().setUseWideViewPort(true);
+		webView.setInitialScale(0);
 		webView.setWebViewClient(new NoURLwebview());
 		webView.loadUrl(LocatorAndNoiseMeterImpl.noisemap_server_url+"?isMobile=true");
 	    /*
@@ -84,7 +85,7 @@ public class NoisemapLayout extends RelativeLayout {
         i.setLayoutParams(new Gallery.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         */
         this.addView(webView);        
-        return this;
+        return webView;
 	}
     /**
      * Provides a hook for calling "alert" from javascript. Useful for

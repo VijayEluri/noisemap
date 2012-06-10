@@ -2,6 +2,8 @@ package xifopen.noisemap.client.android.data;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -21,11 +23,16 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
@@ -35,15 +42,27 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	private WifiManager wifi;
 	private int tried = 0;
 	private String ip;
-	/*
-	 * located also at Web Start configuration of NetBeans
-	 */
+
 	public static String noisemap_server_url = "http://craftsrv5.epfl.ch/projects/noisemap";
 	public static String payment_server_url = "http://128.178.254.243:8080/RestPaymentServer/webresources/paymentService";
 	//"http://128.178.13.166:8080/RestPaymentServer/webresources/paymentService";
-	private String bssid;
+	public String bssid;
 	private int rate = -1;		 	// device specific
 	private int minBufferSize = -10;
+	
+	public class Locator extends BroadcastReceiver {
+		 @Override 
+	     public void onReceive(Context context, Intent i) {
+			 NetworkInfo networkInfo = (NetworkInfo) i.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+			 if(networkInfo.getType() == ConnectivityManager.TYPE_WIFI){
+				 WifiManager myWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+				 bssid = myWifiManager.getConnectionInfo().getBSSID();
+				 // if(maxdb==-200)
+			     //	    throw new Issue("This application works only inside the Rolex Learning Center");
+			 }
+	     }
+	}
+	
 	public LocatorAndNoiseMeterImpl(WifiManager wifi){
 		this.wifi = wifi;
 		if(!wardriving)
@@ -76,7 +95,7 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 		// Each measurement is done 1 second after the previous one.
 		Log.i(TAG, "Sendingnoise: "+db+"\n");
 		send2noisemapserver(db); 
-		send2paymentserver(db);
+		//send2paymentserver(db);
 		Log.v(TAG, "Sent successfully to server the following data: "+db+" db in the AOI near the router "+bssid+"\n");
 	}
 	private void wait1sec(){
@@ -93,76 +112,52 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 			throw new Issue("Interrupted while waiting for a sec");
 		}
 	}
- 	private String locator(WifiManager wifi){
+ 	private String locator(WifiManager wifi){		// method only for the demo
  		ip = wifi.getConnectionInfo().getMacAddress();	// probably not debuggable
- 		if(ip.equals("38:E7:D8:1E:CA:1E"))		// for the demo
+ 		if(ip.equals("38:E7:D8:1E:CA:1E"))
  			ip = "Auguste";
  		else if(ip.equals("54:04:A6:48:48:DA"))
  			ip = "Nikos";
- 		/**
- 		 * try 10 times to reconnect so that we are more confident
- 		 * that the BSSID is the nearest while you are moving
- 		 */
- 		/*
- 		for(int i=0; i<10; i++){
- 			if(wifi.reconnect())
- 				break;
- 			else
- 				Log.w(TAG, "Failed to reconnect for "+i+"th time\n");
- 			wait1sec();
- 		}
- 		if(!wifi.reconnect())
- 			throw new Issue("Failed to reconnect to WiFi");
- 		String newBSSID = wifi.getConnectionInfo().getBSSID();
- 		Log.w(TAG, "The new BSSID is "+newBSSID+"\n");
- 		return newBSSID;
- 		*/
-		String strongestBSSID = "";
-		//WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        if(wifi==null)
-        	throw new Issue("Please enable Wireless Connection");
-        wifi.startScan();
-        int maxdb = -200;
-        for(ScanResult s : wifi.getScanResults())
-        	if(maxdb<s.level && s.SSID.contains("epfl")){
-        		maxdb = s.level;
-        		strongestBSSID = s.BSSID;
-        	}
-        if(maxdb==-200)
-        	throw new Issue("This application works only inside the Rolex Learning Center");
-        return strongestBSSID;
+        return bssid;
 	}
 	private double noiselevel(){
         double db = -200;
-        try{
-	        if(rate==-1)
-	        	throw new Issue("Failed to get minimum buffer size of microphone");
-	        if(minBufferSize>0){
-		        AudioRecord audioInput = new AudioRecord(MediaRecorder.AudioSource.MIC,
-		                rate,
-		                AudioFormat.CHANNEL_CONFIGURATION_MONO,
-		                AudioFormat.ENCODING_PCM_16BIT,
-		                minBufferSize*2);
-		        short[] buffer = new short[minBufferSize*2];
-		        audioInput.startRecording();
-		        int nread = audioInput.read(buffer, 0, buffer.length);
-		        audioInput.stop();
-		        if(nread>0){
-		        	db = SignalPower.calculatePowerDb(buffer, 0, buffer.length);
-		        	BigDecimal bd = new BigDecimal(db);
-		            BigDecimal rounded = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
-		            db = rounded.doubleValue();
-		            Log.v(TAG, db+" db\n");
-		        }
-		        else
-		        	throw new Issue("Failed to read recorded data from microphone");
-	        }
-        }
-        catch(Exception e){
-        	throw new Issue("Unexpected error: "+e.getMessage());
-        }
+    	for(int i=0; i<5; i++){
+    		try{
+    			db = measure();
+    		}
+            catch(Exception e){
+            	if(i==4)
+            		throw new Issue("Failed repeatedly to read recorded data from microphone.\n"+e.getMessage());
+            	else
+            		wait1sec();
+            }
+    	}
 	    return db;
     }
+	private double measure() throws Issue{
+		double db = -200;
+		if(rate==-1 || minBufferSize<=0)
+        	throw new Issue("Failed to get minimum buffer size of microphone");
+		AudioRecord audioInput = new AudioRecord(MediaRecorder.AudioSource.MIC,
+                rate,
+                AudioFormat.CHANNEL_CONFIGURATION_MONO,
+                AudioFormat.ENCODING_PCM_16BIT,
+                minBufferSize*2);
+        short[] buffer = new short[minBufferSize*2];
+        audioInput.startRecording();
+        int nread = audioInput.read(buffer, 0, buffer.length);
+        audioInput.stop();
+        if(nread==AudioRecord.ERROR_BAD_VALUE || nread==AudioRecord.ERROR_INVALID_OPERATION)
+        	throw new Issue("Check if the application Sound Recorder works.\n");
+    	db = SignalPower.calculatePowerDb(buffer, 0, buffer.length);
+    	if(db==Float.NEGATIVE_INFINITY)
+    		throw new Issue("Check if sound is mute because input is empty.\n");
+		BigDecimal bd = new BigDecimal(db);
+		BigDecimal rounded = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+		db = rounded.doubleValue();
+        return db;
+	}
     /**
      * Sends HTTP POST with bssid, noise and timestamp in milliseconds
      */
@@ -260,8 +255,12 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 		private String mistake;
         public Issue(String say_what_happened){
             super(say_what_happened);
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            printStackTrace(pw);
+            String stacktrace = sw.toString();
             String precondition = "Please check your internet connection.\n";
-            mistake = precondition + say_what_happened;
+            mistake = precondition + say_what_happened+"\n"+stacktrace;
             Log.e(TAG,mistake);
         }
         public String get(){
