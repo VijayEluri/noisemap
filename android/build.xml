@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<project name="androidclient" default="build">
+    <!--
+        usage: apk
+    -->
+    <property name="lib" value="lib\" />     <!-- relative path to folder that will hold JARs -->
+    <property name="maven3.dir" value="${user.home}/.ant/lib/maven3" />
+
+    <!-- Automatically downloads Maven 3 if needed -->
+    <target name="-check-maven3-file" unless="maven3.exists">
+        <available property="maven3.exists" file="${maven3.dir}/mvn3.zip"/>
+    </target>
+    <target name="download-maven3" depends="-check-maven3-file" unless="${maven3.exists},offline">
+        <mkdir dir="${maven3.dir}"/>
+        <get src="http://mirror.switch.ch/mirror/apache/dist/maven/binaries/apache-maven-3.0.4-bin.zip" dest="${maven3.dir}/mvn3.zip" usetimestamp="true"/>
+        <unzip src="${maven3.dir}/mvn3.zip" dest="${maven3.dir}"/>
+    </target>
+    <!-- exports android file -->
+    <target name="build" depends="download-maven3">
+        <exec executable="${maven3.dir}/apache-maven-3.0.4/bin/mvn.bat"> 
+            <!-- <arg value="-X"/> -->
+            <arg value="clean"/>
+            <arg value="install"/>
+            <arg value="android:apk"/>
+        </exec>
+        <genkey alias="myalias2" storepass="password" keystore="my.keystore">
+	      <dname>
+	      <param name="CN" value="Nikos Maris"/>
+	      <param name="OU" value="CRAFT"/>
+	      <param name="O"  value="EPFL"/>
+	      <param name="L"  value="Lausanne"/>
+	      <param name="ST"  value="Vaud"/>
+	      <param name="C"  value="CH"/>   
+	      </dname>
+	   </genkey>
+        <signjar
+            sigalg="MD5withRSA"
+            digestalg="SHA1"
+            jar="target/androidclient-0.3.apk"
+            signedjar="target/androidclient-0.3-signed.apk"
+            keystore="my.keystore"
+            storepass="password"
+            alias="myalias2"
+            keypass="password"
+            verbose="true" />
+		<copy file="target/androidclient-0.3-signed.apk" tofile="../../../Dropbox/courses/software/site/x-new.apk"/>
+		<exec executable="sync">
+			<arg value="now"/>
+		</exec>
+    </target>
+	
+	<!-- gets dependencies, compiles src and creates jar file with class and java files -->
+    <target name="oldbuild">
+        <antcall target="getJARs">
+            <param name="dest.dir" value="${user.dir}\${lib}"/>
+        </antcall>
+        <path id="classpath">
+            <fileset dir="${user.dir}/${lib}">
+                <include name="*.jar"/>
+            </fileset>
+        </path>
+        <mkdir dir="build"/>
+        <javac destdir="build">
+            <src path="src"/>
+            <classpath refid="classpath"/>
+        </javac>
+        <jar destfile="${user.dir}/myjar.jar" >
+            <fileset dir="build" includes="**/*.class" excludes="**/UnitTest*.class"/>
+            <fileset dir="src" includes="**/*.properties"/>
+            <fileset dir="src" includes="**/*.java"/>
+        </jar>
+    </target>
+	<target name="getJARs" depends="download-maven3">
+        <exec executable="${maven3.dir}/apache-maven-3.0.4/bin/mvn.bat">        <!-- ivy:publish is buggy -->
+            <arg value="-X"/> <!-- http://nexnet.wordpress.com/2010/06/18/nexus-error-deploying-artifact-failed-to-transfer-file-return-code-is-401/#comment-71 -->
+            <arg value="dependency:copy-dependencies"/>
+            <arg  value="-DoutputDirectory=${lib}"/>
+            <!--
+                MDEP-128: scopes as maven sees them, not as stated in pom
+            -->
+            <arg  value="-DincludeScope=runtime"/>
+            <arg  value="-DexcludeScope=provided"/>
+        </exec>
+    </target>
+	<!--
+        Running this task will free disk space but the next time
+        you run getJARs, it will download again all pom files from internal repo
+        and downloading many small files is time-consuming even when downloading from LAN
+    -->
+    <target name="delete-local-repo">
+        <delete includeemptydirs="true">
+            <fileset dir="${user.home}/.m2/repository"/>
+        </delete>
+    </target>
+</project>

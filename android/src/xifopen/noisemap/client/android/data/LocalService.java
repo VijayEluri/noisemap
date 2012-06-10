@@ -94,11 +94,11 @@ public class LocalService extends Service {
 					}
 				}
 			}, 0, 5000);	// for the demo, otherwise it should be 5 minutes
-		Log.i(getClass().getSimpleName(), "Service Noisemap started!!!");
+		Log.i(getClass().getSimpleName(), "Service Noisemap started");
     }
     private void _shutdownService() {
     	if (timer != null)
     		timer.cancel();
-    	Log.e(getClass().getSimpleName(), "Service Noisemap stopped!!!");
+    	Log.e(getClass().getSimpleName(), "Service Noisemap stopped");
     }
 }

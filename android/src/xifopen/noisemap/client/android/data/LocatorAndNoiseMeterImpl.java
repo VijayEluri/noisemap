@@ -31,7 +31,7 @@ import android.util.Log;
 
 public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	private static final String TAG = "LocatorAndNoiseMeterImpl";
-	private static final boolean wardriving = true;
+	private static final boolean wardriving = true;  // for the demo
 	private WifiManager wifi;
 	private int tried = 0;
 	private String ip;
@@ -47,7 +47,7 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	public LocatorAndNoiseMeterImpl(WifiManager wifi){
 		this.wifi = wifi;
 		if(!wardriving)
-			bssid = locator(this.wifi); 
+			this.bssid = locator(this.wifi); 
 		
         int[] sampleRates = new int[] { 8000, 11025, 22050, 44100 };
         for (int aRate : sampleRates) {
@@ -63,7 +63,7 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	public void send(){
 		double db = 0;
 		if(wardriving)
-			bssid = locator(this.wifi);  
+			this.bssid = locator(this.wifi);
 		for(int i=0; i<5; i++){
 			try{					// if the user is speaking on the phone, then it tries after 5 minutes
 				db += noiselevel();
@@ -103,6 +103,7 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
  		 * try 10 times to reconnect so that we are more confident
  		 * that the BSSID is the nearest while you are moving
  		 */
+ 		/*
  		for(int i=0; i<10; i++){
  			if(wifi.reconnect())
  				break;
@@ -111,9 +112,11 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
  			wait1sec();
  		}
  		if(!wifi.reconnect())
- 			throw new Issue("Failed to recoonect to WiFi");
- 		return wifi.getConnectionInfo().getBSSID();
- 		/*
+ 			throw new Issue("Failed to reconnect to WiFi");
+ 		String newBSSID = wifi.getConnectionInfo().getBSSID();
+ 		Log.w(TAG, "The new BSSID is "+newBSSID+"\n");
+ 		return newBSSID;
+ 		*/
 		String strongestBSSID = "";
 		//WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         if(wifi==null)
@@ -128,7 +131,6 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
         if(maxdb==-200)
         	throw new Issue("This application works only inside the Rolex Learning Center");
         return strongestBSSID;
-        */
 	}
 	private double noiselevel(){
         double db = -200;
@@ -217,7 +219,7 @@ public class LocatorAndNoiseMeterImpl implements LocatorAndNoiseMeter{
 	    	url += "?";
 	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 	        nameValuePairs.add(new BasicNameValuePair("userID", ip));
-	        url += "id=123456&";
+	        url += "userID="+ip+"&";
 	        nameValuePairs.add(new BasicNameValuePair("routerName", ""+this.bssid));
 	        url += "routerName="+this.bssid+"&";
 	        nameValuePairs.add(new BasicNameValuePair("soundLevel", ""+db));
