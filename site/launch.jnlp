@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jnlp codebase="http://craftsrv5.epfl.ch/projects/noisemap/" href="launch.jnlp" spec="1.0+">
+    <information>
+        <title>noisemap</title>
+        <vendor>nickmeet</vendor>
+        <homepage href=""/>
+        <description>noisemap</description>
+        <description kind="short">noisemap</description>
+        
+        
+    <offline-allowed/>
+</information>
+    <update check="background"/>
+    <security>
+<all-permissions/>
+</security>
+    <resources>
+        <j2se version="1.6+"/>
+        <jar href="noisemap.jar" main="true"/>
+    </resources>
+    <application-desc main-class="xifopen.noisemap.client.computer.UI.WebStart">
+        
+    </application-desc>
+</jnlp>

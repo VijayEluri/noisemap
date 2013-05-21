@@ -1,0 +1,50 @@
+@charset "utf-8";
+/* CSS Document */
+
+body, html {
+	margin:0;
+	padding:0;
+	font-family:Arial;
+}
+h1 {
+	margin-bottom:10px;
+}
+/*
+#main {
+	position:relative;
+	width:940px;
+	padding:20px;
+	margin:auto;
+}*/
+#container{
+	margin-left:10px;
+	margin-top: 10px;
+	text-align:center;
+}
+#heatmapArea {
+	position:relative;
+	float:none;
+	
+	display: block; margin-left: auto; margin-right: auto;
+	
+	width:900px;	/* 558px*/
+	height:665px;	/* 408px */
+	background-image:url('../images/gray_bright.jpg');
+	border:1px black;
+}
+#data {
+	display:none;
+}
+/* To debug, comment the following*/
+table{
+	display:none;
+}
+/*
+textarea{
+	width:260px;
+	padding:10px;
+	height:200px;
+}*/
+h2{
+	margin-top:0;
+}
