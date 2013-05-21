@@ -1,8 +1,8 @@
 # Description
 
-This Java application measures the noise intensity of your microphone and the BSSID of the nearest router (in terms of signal strength).
+To run this application, you have to be located inside the [Rolex Learning Center](http://rolexlearningcenter.epfl.ch/).
+The client application measures the noise intensity of your microphone and the BSSID of the nearest router in terms of signal strength. The server collects that information and displays it as an overlay over an indoor map of the library.
 
-The android folder has an eclipse project for the android client.
 
 # Development
 
