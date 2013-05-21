@@ -5,7 +5,7 @@ The client application measures the noise intensity of your microphone and the B
 
 It has a minimal user interface with an overlaid map and a menu to start/stop measuring.
 
-The application is not currently maintained and it is released under LGPL.
+The application is not currently maintained and it is released under the FreeBSD license.
 
 ### Development
 
